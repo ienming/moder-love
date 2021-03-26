@@ -1,0 +1,17 @@
+$white: #ffffff
+
+main
+    position: relative
+
+.lyrics-container
+    background-color: $white
+    position: absolute
+    padding: 0.5rem
+    border-radius: 1rem
+    opacity: 0
+    transform: scale(0)
+    transform-origin: left 50%
+    transition: .35s
+    &.show
+        transform: scale(1)
+        opacity: 1

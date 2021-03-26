@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moder Love</title>
+    <link rel="stylesheet" href="assets/styles/mystyle.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="assets/js/p5.min.js"></script>
+    <script>
+      function Data(year, lyrics, attitude, love, lovePos) {
+        this.year = year;
+        this.lyrics = lyrics;
+        this.attitude = attitude;
+        this.love = love;
+        this.lovePos = lovePos;
+        this.dataX = undefined;
+        this.dataY = undefined;
+        this.bg = color(0, 0, 0);
+        this.hover = false;
+        this.display = function (x, y) {
+          push();
+          translate(x + offsetX, y + offsetY);
+          //text(this.lyrics.length, 0, 0); //debug length of lyrics
+          stroke(0, 0, 85);
+          // color
+          switch (this.attitude) {
+            case "aggressive":
+              this.bg = color(17, 78, 94);
+              break;
+            case "hope":
+              this.bg = color(37,69,100);
+              break;
+            case "depressed":
+              this.bg = color(206, 64, 91);
+              break;
+            case "neutral":
+              this.bg = color(0,0,50);
+              break;
+            case "regret":
+              this.bg = color(204,67,54);
+              break;
+          }
+          fill(this.bg);
+          rect(0, 0, this.lyrics.length * em, h);
+          // Draw the position of "love"
+          if (this.love != 0) {
+            translate(0, h / 2);
+            fill(0, 0, 100);
+            circle(this.lovePos * em, 0, 5);
+          }
+          pop();
+
+          // set x and y position into this object for listener
+          this.dataX = x + offsetX;
+          this.dataY = y + offsetY;
+        };
+      }
+
+      // Songs information
+      let songs = [
+        {
+          title: "夜曲",
+          year: "2005",
+          singer: "周杰倫"
+        },{
+          title: "想見你想見你想見你",
+          year: "2020",
+          singer: "八三夭"
+        },
+      ];
+    </script>
+    <script>
+      let table;
+      let mouseX, mouseY, cnv, clickData;
+      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 240, 180, 50];
+      let rem = em * 10;
+      let data_arr = [],
+        all_data_arr = [];
+      let beginYear = "2005";
+
+      function preload() {
+        //load data
+        table = loadTable("assets/data/data.csv", "csv", "header");
+      }
+
+      function setup() {
+        cnv = createCanvas(windowWidth, 1080);
+        colorMode(HSB);
+
+        for (let i = 0; i < table.getRowCount(); i++) {
+          let row = table.getRow(i);
+
+          let year = row.getString("Year");
+          let lyrics = row.getString("String").replace(/\s*/g, "");
+          let attitude = row.getString("Attitude");
+          let love = row.getString("Love");
+          let lovePos = lyrics.indexOf("愛");
+
+          //Create object
+          let data_obj = new Data(year, lyrics, attitude, love, lovePos);
+
+          // Switch to next year into another array
+          if (year == beginYear) {
+            data_arr.push(data_obj);
+          } else if (year == "end") {
+            all_data_arr.push(data_arr);
+          } else {
+            beginYear = year;
+            all_data_arr.push(data_arr);
+            data_arr = [];
+            data_arr.push(data_obj);
+          }
+        }
+      }
+
+      function draw() {
+        background(0, 0, 85);
+
+        for (let i = 0; i < all_data_arr.length; i++) {
+          // Description
+          // Render song information
+          renderSong(songs[i].title, songs[i].year, songs[i].singer, 130, y+offsetY+10);
+          for (let j = 0; j < all_data_arr[i].length; j++) {
+            let nowData = all_data_arr[i][j];
+            let lyricsLength = nowData.lyrics.length;
+            // Draw
+            nowData.display(x, y);
+            x += lyricsLength * em;
+          }
+          y += (windowHeight - offsetY * 2) / all_data_arr.length;
+          x = 10;
+        }
+        y = 20;
+
+        // Eventlistener
+        cnv.mouseClicked(clickPos);
+        // cnv.mouseMoved(hoverPos);
+      }
+
+      function hoverPos(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        for (let i = 0; i < all_data_arr.length; i++) {
+          for (let j = 0; j < all_data_arr[i].length; j++) {
+            let nowData = all_data_arr[i][j];
+            if (
+              //hover on data
+              mouseX > nowData.dataX &&
+              mouseX < nowData.dataX + nowData.lyrics.length * em &&
+              mouseY > nowData.dataY &&
+              mouseY < nowData.dataY + h
+            ) {
+              if (!nowData.hover) {
+                nowData.bg = color(
+                  hue(nowData.bg),
+                  saturation(nowData.bg),
+                  brightness(nowData.bg) + 35
+                );
+                nowData.hover = true;
+              }
+            } else {
+              //other data return to default color
+              // nowData.bg = color(hue(nowData.bg), saturation(nowData.bg), brightness(nowData.bg)-35);
+              // nowData.hover = false;
+              console.log(
+                hue(nowData.bg),
+                saturation(nowData.bg),
+                brightness(nowData.bg)
+              );
+              nowData.bg = color(
+                hue(nowData.bg),
+                saturation(nowData.bg),
+                brightness(nowData.bg) - 35
+              );
+            }
+          }
+        }
+      }
+
+      function clickPos(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        clickData = false;
+        for (let i = 0; i < all_data_arr.length; i++) {
+          for (let j = 0; j < all_data_arr[i].length; j++) {
+            let nowData = all_data_arr[i][j];
+            if (
+              //click on data
+              mouseX > nowData.dataX &&
+              mouseX < nowData.dataX + nowData.lyrics.length * em &&
+              mouseY > nowData.dataY &&
+              mouseY < nowData.dataY + h
+            ) {
+              clickData = true;
+              // remove div now
+              if (document.querySelector(".lyrics-container.show")) {
+                document
+                  .querySelector(".lyrics-container")
+                  .classList.remove("show");
+                document
+                  .querySelector(".lyrics-container:not(.show)")
+                  .addEventListener("transitionend", function () {
+                    this.remove();
+                  });
+              }
+              // append new div
+              let div = document.createElement("div");
+              div.innerHTML = `
+                <span>${nowData.lyrics}</span>
+              `;
+              div.classList.add("lyrics-container");
+              div.style.top = mouseY + "px";
+              div.style.left = mouseX + "px";
+              if (!document.querySelector(".lyrics-container")) {
+                document.querySelector("main").appendChild(div);
+                window.setTimeout(function () {
+                  document
+                    .querySelector(".lyrics-container")
+                    .classList.add("show");
+                }, 100);
+              }
+            }
+          }
+        }
+        if (!clickData && document.querySelector(".lyrics-container.show")) {
+          document.querySelector(".lyrics-container").classList.remove("show");
+          document
+            .querySelector(".lyrics-container:not(.show)")
+            .addEventListener("transitionend", function () {
+              this.remove();
+            });
+        }
+      }
+
+      function renderSong(title, year, singer, x, y) {
+        textSize(rem);
+        textAlign(CENTER);
+        text(title, x, y);
+        textSize(rem * 0.6);
+        text(year, x, y + rem * 1.5);
+        textSize(rem * 0.8);
+        text(singer, x, y + rem * 2.5);
+      }
+    </script>
+  </body>
+</html>
