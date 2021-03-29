@@ -17,6 +17,7 @@
     </style>
   </head>
   <body>
+    <!-- P5.js -->
     <script src="assets/js/p5.min.js"></script>
     <script>
       function Data(year, lyrics, attitude, love, lovePos) {
@@ -25,40 +26,37 @@
         this.attitude = attitude;
         this.love = love;
         this.lovePos = lovePos;
+        this.loveColor = loveColorPalette(this.love);
         this.dataX = undefined;
         this.dataY = undefined;
-        this.bg = color(0, 0, 0);
+        this.bg = colorPalette(this.attitude);
         this.hover = false;
         this.display = function (x, y) {
           push();
           translate(x + offsetX, y + offsetY);
           //text(this.lyrics.length, 0, 0); //debug length of lyrics
-          stroke(0, 0, 85);
+          strokeWeight(0.5);
+          stroke(0, 0, 100);
           // color
-          switch (this.attitude) {
-            case "aggressive":
-              this.bg = color(17, 78, 94);
-              break;
-            case "hope":
-              this.bg = color(37,69,100);
-              break;
-            case "depressed":
-              this.bg = color(206, 64, 91);
-              break;
-            case "neutral":
-              this.bg = color(0,0,50);
-              break;
-            case "regret":
-              this.bg = color(204,67,54);
-              break;
-          }
           fill(this.bg);
           rect(0, 0, this.lyrics.length * em, h);
           // Draw the position of "love"
           if (this.love != 0) {
-            translate(0, h / 2);
-            fill(0, 0, 100);
-            circle(this.lovePos * em, 0, 5);
+            translate(0, 0);
+            fill(this.loveColor);
+            noStroke();
+            quad(
+              this.lovePos,
+              -5,
+              this.lovePos + 5,
+              0,
+              this.lovePos,
+              5,
+              this.lovePos - 5,
+              0
+            );
+            stroke(this.loveColor);
+            line(this.lovePos, 0, this.lovePos, h);
           }
           pop();
 
@@ -71,24 +69,53 @@
       // Songs information
       let songs = [
         {
-          title: "夜曲",
-          year: "2005",
-          singer: "周杰倫"
-        },{
           title: "想見你想見你想見你",
           year: "2020",
-          singer: "八三夭"
+          singer: "八三夭",
+        },{
+          title: "怎麼了",
+          year: "2019",
+          singer: "周興哲",
+        },{
+          title: "體面",
+          year: "2018",
+          singer: "于文文",
+        },{
+          title: "讓我留在你身邊",
+          year: "2017",
+          singer: "陳奕迅",
+        },{
+          title: "不為誰而作的歌",
+          year: "2016",
+          singer: "林俊傑",
+        },{
+          title: "小幸運",
+          year: "2015",
+          singer: "田馥甄",
+        },{
+          title: "像是天堂的懸崖",
+          year: "2014",
+          singer: "李佳薇",
+        },{
+          title: "傷心的人別聽慢歌",
+          year: "2013",
+          singer: "五月天",
+        },{
+          title: "夜曲",
+          year: "2005",
+          singer: "周杰倫",
         },
       ];
     </script>
     <script>
       let table;
       let mouseX, mouseY, cnv, clickData;
-      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 240, 180, 50];
-      let rem = em * 10;
+      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 240, 180, 30];
+      let gap = h*1.5;
+      let rem = 16;
       let data_arr = [],
         all_data_arr = [];
-      let beginYear = "2005";
+      let beginYear = "2020";
 
       function preload() {
         //load data
@@ -96,7 +123,7 @@
       }
 
       function setup() {
-        cnv = createCanvas(windowWidth, 1080);
+        cnv = createCanvas(windowWidth, offsetY*2+16*h+(16-1)*gap);
         colorMode(HSB);
 
         for (let i = 0; i < table.getRowCount(); i++) {
@@ -105,7 +132,7 @@
           let year = row.getString("Year");
           let lyrics = row.getString("String").replace(/\s*/g, "");
           let attitude = row.getString("Attitude");
-          let love = row.getString("Love");
+          let love = row.getNum("Love");
           let lovePos = lyrics.indexOf("愛");
 
           //Create object
@@ -114,8 +141,9 @@
           // Switch to next year into another array
           if (year == beginYear) {
             data_arr.push(data_obj);
-          } else if (year == "end") {
-            all_data_arr.push(data_arr);
+            if (i == table.getRowCount() - 1) {
+              all_data_arr.push(data_arr);
+            }
           } else {
             beginYear = year;
             all_data_arr.push(data_arr);
@@ -126,12 +154,18 @@
       }
 
       function draw() {
-        background(0, 0, 85);
+        background(0, 0, 90);
 
         for (let i = 0; i < all_data_arr.length; i++) {
           // Description
           // Render song information
-          renderSong(songs[i].title, songs[i].year, songs[i].singer, 130, y+offsetY+10);
+          // renderSong(
+          //   songs[i].title,
+          //   songs[i].year,
+          //   songs[i].singer,
+          //   offsetX-20,
+          //   y + offsetY + h/3.75
+          // );
           for (let j = 0; j < all_data_arr[i].length; j++) {
             let nowData = all_data_arr[i][j];
             let lyricsLength = nowData.lyrics.length;
@@ -139,14 +173,14 @@
             nowData.display(x, y);
             x += lyricsLength * em;
           }
-          y += (windowHeight - offsetY * 2) / all_data_arr.length;
+          y += gap;
           x = 10;
         }
         y = 20;
 
         // Eventlistener
         cnv.mouseClicked(clickPos);
-        // cnv.mouseMoved(hoverPos);
+        cnv.mouseMoved(hoverPos);
       }
 
       function hoverPos(e) {
@@ -159,31 +193,28 @@
               //hover on data
               mouseX > nowData.dataX &&
               mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY > nowData.dataY &&
-              mouseY < nowData.dataY + h
+              mouseY+window.scrollY > nowData.dataY &&
+              mouseY+window.scrollY < nowData.dataY + h
             ) {
               if (!nowData.hover) {
                 nowData.bg = color(
                   hue(nowData.bg),
                   saturation(nowData.bg),
-                  brightness(nowData.bg) + 35
+                  brightness(nowData.bg) + 10
                 );
                 nowData.hover = true;
               }
             } else {
-              //other data return to default color
-              // nowData.bg = color(hue(nowData.bg), saturation(nowData.bg), brightness(nowData.bg)-35);
-              // nowData.hover = false;
-              console.log(
-                hue(nowData.bg),
-                saturation(nowData.bg),
-                brightness(nowData.bg)
-              );
-              nowData.bg = color(
-                hue(nowData.bg),
-                saturation(nowData.bg),
-                brightness(nowData.bg) - 35
-              );
+              //not hover on NOW data
+              if (nowData.hover) {
+                //just being hover need to change to origin
+                nowData.bg = color(
+                  hue(nowData.bg),
+                  saturation(nowData.bg),
+                  brightness(nowData.bg) - 10
+                );
+              }
+              nowData.hover = false;
             }
           }
         }
@@ -200,8 +231,8 @@
               //click on data
               mouseX > nowData.dataX &&
               mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY > nowData.dataY &&
-              mouseY < nowData.dataY + h
+              mouseY+window.scrollY > nowData.dataY &&
+              mouseY+window.scrollY < nowData.dataY + h
             ) {
               clickData = true;
               // remove div now
@@ -221,7 +252,7 @@
                 <span>${nowData.lyrics}</span>
               `;
               div.classList.add("lyrics-container");
-              div.style.top = mouseY + "px";
+              div.style.top = mouseY+window.scrollY + "px";
               div.style.left = mouseX + "px";
               if (!document.querySelector(".lyrics-container")) {
                 document.querySelector("main").appendChild(div);
@@ -245,13 +276,82 @@
       }
 
       function renderSong(title, year, singer, x, y) {
+        push();
+        fill(0, 0, 100);
         textSize(rem);
-        textAlign(CENTER);
-        text(title, x, y);
-        textSize(rem * 0.6);
-        text(year, x, y + rem * 1.5);
-        textSize(rem * 0.8);
-        text(singer, x, y + rem * 2.5);
+        textAlign(RIGHT);
+        text(title, x, y-rem*0.25);
+        textSize(rem * 1.2);
+        text(year, x, y + rem * 1.75);
+        textSize(rem*0.8);
+        text(singer, x, y + rem * 3);
+        pop();
+      }
+
+      function windowResized() {
+        resizeCanvas(windowWidth, 1080);
+      }
+
+      function colorPalette(atud) {
+        let c;
+        switch (atud) {
+          case "aggressive":
+            c = color(17, 78, 94);
+            break;
+          case "hope":
+            c = color(37, 69, 100);
+            break;
+          case "stubborn":
+            c = color(77, 49, 80);
+            break;
+          case "notSure":
+            c = color(0, 69, 100);
+            break;
+          case "depressed":
+            c = color(210, 8, 88);
+            break;
+          case "neutral":
+            c = color(0, 0, 35);
+            break;
+          case "regret":
+            c = color(204, 67, 54);
+            break;
+          case "passive":
+            c = color(184, 77, 54);
+            break;
+          case "hurtHope":
+            c = color(220, 67, 54);
+            break;
+        }
+        return c;
+      }
+
+      function loveColorPalette(lv) {
+        let c;
+        switch (lv) {
+          case 1: //noun love
+            c = color(0, 84, 75);
+            break;
+          case 2:
+            c = color(0, 64, 100);
+            break;
+          case 3: //love you
+            c = color(0, 46, 100);
+            break;
+          case 4:
+            c = color(0, 0, 35);
+            break;
+          case 5:
+            c = color(204, 67, 54);
+            break;
+          case 6:
+            c = color(204, 67, 54);
+            break;
+          case 7:
+            c = color(234, 67, 54);
+            break;
+        }
+        return c;
       }
     </script>
   </body>

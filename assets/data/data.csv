@@ -1,36 +1,4 @@
-﻿Year,Tune(of song),String,Attitude,Person,Love
-2005,broken,一群嗜血的螞蟻 被腐肉所吸引 我面無表情 看孤獨的風景,depressed,2,0
-2005,broken,失去妳 愛恨開始分明 失去妳 還有什麼事好關心,depressed,1,1
-2005,broken,當鴿子不再象徵和平 我終於被提醒 廣場上餵食的是禿鷹,depressed,2,0
-2005,broken,我用漂亮的押韻 形容被掠奪一空的愛情,depressed,2,1
-2005,broken,啊 烏雲開始遮蔽 夜色不乾淨 公園裡 葬禮的回音 在漫天飛行,depressed,0,0
-2005,broken,送妳的 白色玫瑰 在純黑的環境凋零 烏鴉在樹枝上詭異的很安靜,depressed,1,0
-2005,broken,靜靜聽 我黑色的大衣 想溫暖妳 日漸冰冷的回憶 走過的 走過的 生命,depressed,3,0
-2005,broken,啊 四周瀰漫霧氣 我在空曠的墓地 老去後還愛妳,depressed,3,3
-2005,broken,為妳彈奏蕭邦的夜曲 紀念我死去的愛情,depressed,2,1
-2005,broken,跟夜風一樣的聲音 心碎的很好聽,depressed,0,0
-2005,broken,手在鍵盤敲很輕 我給的思念很小心,neutral,2,0
-2005,broken,妳埋葬的地方叫幽冥,depressed,1,0
-2005,broken,為妳彈奏蕭邦的夜曲 紀念我死去的愛情,depressed,3,1
-2005,broken,而我為妳隱姓埋名 在月光下彈琴,neutral,3,0
-2005,broken,對妳心跳的感應 還是如此溫熱親近,depressed,1,0
-2005,broken,懷念妳那鮮紅的唇印,depressed,1,0
-2005,broken,那些斷翅的蜻蜓 散落在這森林 而我的眼睛 沒有絲毫同情,depressed,2,0
-2005,broken,失去妳 淚水混濁不清 失去妳 我連笑容都有陰影,depressed,3,0
-2005,broken,風在長滿青苔的屋頂 嘲笑我的傷心 像一口沒有水的枯井,depressed,2,0
-2005,broken,我用淒美的字型 描繪後悔莫及的那愛情,regret,2,1
-2005,broken,為妳彈奏蕭邦的夜曲 紀念我死去的愛情,depressed,3,1
-2005,broken,跟夜風一樣的聲音 心碎的很好聽,depressed,0,0
-2005,broken,手在鍵盤敲很輕 我給的思念很小心,depressed,2,0
-2005,broken,妳埋葬的地方叫幽冥,depressed,1,0
-2005,broken,為妳彈奏蕭邦的夜曲 紀念我死去的愛情,depressed,3,1
-2005,broken,而我為妳隱姓埋名 在月光下彈琴,neutral,3,0
-2005,broken,對妳心跳的感應 還是如此溫熱親近,depressed,1,0
-2005,broken,懷念妳那鮮紅的唇印,depressed,1,0
-2005,broken,一群嗜血的螞蟻 被腐肉所吸引 我面無表情 看孤獨的風景,depressed,2,0
-2005,broken,失去妳 愛恨開始分明 失去妳 還有什麼事好關心,depressed,1,1
-2005,broken,當鴿子不再象徵和平 我終於被提醒 廣場上餵食的是禿鷹,depressed,2,0
-2005,broken,我用漂亮的押韻 形容被掠奪一空的愛情,depressed,2,1
+﻿Year,Tune,String,Attitude,Person,Love
 2020,broken,當愛情遺落成遺跡 用象形刻劃成回憶,depressed,0,1
 2020,broken,想念幾個世紀 才是刻骨銘心？,depressed,0,0
 2020,broken,若能回到冰河時期 多想把你抱緊處理,regret,1,0
@@ -38,7 +6,288 @@
 2020,broken,失去 你的風景 像座廢墟 像失落文明,depressed,1,0
 2020,broken,能否 一場奇蹟 一線生機,hope,0,0
 2020,broken,能不能 有再一次 相遇,hope,0,0
-2020,broken,想見你,aggressive,3,0
-2020,broken,只想見你,aggressive,3,0
+2020,broken,想見你,aggressive,1,0
+2020,broken,只想見你,aggressive,1,0
 2020,broken,未來過去 我只想見你,aggressive,3,0
-end,,,,,
+2020,broken,穿越了 千個萬個 時間線裡 人海裡相依,aggressive,0,0
+2020,broken,用盡了 邏輯心機 推理愛情 最難解的謎,aggressive,0,1
+2020,broken,會不會 妳也 和我一樣 在等待一句 我願意,notSure,3,0
+2020,broken,任時光更迭了四季 任宇宙物換或星移 永遠不退流行 是青澀的真心,aggressive,0,0
+2020,broken,未來 先進科技 無法模擬 你擁抱暖意,aggressive,1,0
+2020,broken,如果 另個時空 另個身體 能不能 換另一種 結局,hope,0,0
+2020,broken,想見你,aggressive,1,0
+2020,broken,只想見你,aggressive,1,0
+2020,broken,未來過去 我只想見你,aggressive,3,0
+2020,broken,穿越了 千個萬個 時間線裡 人海裡相依,aggressive,0,0
+2020,broken,用盡了 邏輯心機 推理愛情 最難解的謎,aggressive,0,1
+2020,broken,會不會 妳也 和我一樣 在等待一句 我願意,notSure,3,0
+2020,broken,想見你,aggressive,1,0
+2020,broken,只想見你,aggressive,1,0
+2020,broken,未來過去 我只想見你,aggressive,3,0
+2020,broken,穿越了 千個萬個 時間線裡 人海裡相依,aggressive,0,0
+2020,broken,用盡了 邏輯心機 推理愛情 最難解的謎,aggressive,0,1
+2020,broken,會不會 妳也 和我一樣 在等待一句 我願意,notSure,3,0
+2020,broken,想見你 每個朝夕,aggressive,1,0
+2020,broken,想見你 每個表情,aggressive,1,0
+2020,broken,想穿越 每個平行,aggressive,0,0
+2020,broken,在未來 和過去 緊緊相依,hope,0,0
+2020,broken,想 Follow 每則 IG,aggressive,0,0
+2020,broken,不錯過 你的蹤跡,aggressive,1,0
+2020,broken,會不會 你也一樣 等待著那句 我願意,notSure,3,0
+2020,broken,想見你,aggressive,1,0
+2020,broken,只想見你,aggressive,1,0
+2020,broken,未來過去 我只想見你,aggressive,3,0
+2020,broken,穿越了 千個萬個 時間線裡 人海裡相依,aggressive,0,0
+2020,broken,用盡了 邏輯心機 推理愛情 最難解的謎,aggressive,0,1
+2020,broken,會不會 妳也 和我一樣 在等待一句 我願意,notSure,3,0
+2020,broken,想見你 每個朝夕,aggressive,1,0
+2020,broken,想見你 每個表情,aggressive,1,0
+2020,broken,想穿越 每個平行,aggressive,0,0
+2020,broken,在未來 和過去 緊緊相依,hope,0,0
+2020,broken,想 Follow 每則 IG,aggressive,0,0
+2020,broken,不錯過 你的蹤跡,aggressive,1,0
+2020,broken,會不會 你也一樣 等待著那句 我願意,notSure,3,0
+2020,broken,想見你 每個朝夕,aggressive,1,0
+2020,broken,想見你 每個表情,aggressive,1,0
+2020,broken,想穿越 每個平行,aggressive,0,0
+2020,broken,在未來 和過去 緊緊相依,hope,0,0
+2020,broken,想 Follow 每則 IG,aggressive,0,0
+2020,broken,不錯過 你的蹤跡,aggressive,1,0
+2020,broken,會不會 你也一樣 等待著那句 我願意,notSure,3,0
+2019,broken,你說藍色是你最愛的顏色,neutral,1,6
+2019,broken,你說如果沒有愛那又如何,depressed,1,5
+2019,broken,怎麼了 你怎麼了,neutral,1,0
+2019,broken,看過你曾經最燦爛的笑容,depressed,1,0
+2019,broken,看過你緊緊擁抱愛的面孔,depressed,1,1
+2019,broken,怎麼了 你消失了,depressed,1,0
+2019,broken,是不是我錯了 搞錯了 天灰了,depressed,2,0
+2019,broken,雨下著 凝望著 你走了,depressed,1,0
+2019,broken,都回不去了 像從前快樂,regret,0,0
+2019,broken,怎麼能輕易說要結束,depressed,0,0
+2019,broken,怎麼會讓你抱著我哭,depressed,3,0
+2019,broken,太努力的我們最後用力給祝福,depressed,4,0
+2019,broken,怎麼看你笑著 我卻心如刀割,depressed,3,0
+2019,broken,原來我們都一樣頑固,stubborn,4,0
+2019,broken,怎麼會誰都絕口不提要幸福,stubborn,0,0
+2019,broken,再也不能牽著你走未來每一步,depressed,1,0
+2019,broken,我們懷念什麼 失去愛那一刻 才曉得,regret,4,5
+2019,broken,你說藍色是你最愛的顏色,neutral,1,0
+2019,broken,你說如果沒有愛那又如何,depressed,1,5
+2019,broken,怎麼了 你怎麼了,neutral,1,0
+2019,broken,看過你曾經最燦爛的笑容,depressed,1,0
+2019,broken,看過你緊緊擁抱愛的面孔,depressed,1,1
+2019,broken,怎麼了 你消失了,depressed,1,0
+2019,broken,是不是我錯了 搞錯了 越愛著,depressed,2,3
+2019,broken,越痛著 苦笑著 你走了,depressed,1,0
+2019,broken,我們約好了 要比我快樂,hurtHope,4,0
+2019,broken,怎麼能輕易說要結束,depressed,0,0
+2019,broken,怎麼會讓你抱著我哭,depressed,3,0
+2019,broken,太努力的我們最後用力給祝福,depressed,4,0
+2019,broken,祝福我最愛的 遇見更愛你的 飛翔著,hurtHope,3,3
+2019,broken,我不想說 你不會懂 請別可憐我,stubborn,3,0
+2019,broken,受傷的我 究竟需要 一個人 多少年 去度過,depressed,2,0
+2019,broken,我不想說 你不會懂 請別可憐我,stubborn,3,0
+2019,broken,誰說我一定要永遠笑著 我不想,stubborn,2,0
+2019,broken,怎麼能輕易說要結束,depressed,0,0
+2019,broken,怎麼會讓你抱著我哭,depressed,3,0
+2019,broken,太努力的我們最後用力給祝福,depressed,4,0
+2019,broken,祝福我最愛的 能永遠飛翔著,hurtHope,2,3
+2019,broken,原來我們都一樣頑固,stubborn,4,0
+2019,broken,怎麼會誰都絕口不提要幸福,stubborn,0,0
+2019,broken,再也不能牽著你走未來每一步,depressed,1,0
+2019,broken,我們懷念什麼 失去愛那一刻 才曉得,regret,4,5
+2018,broken,別堆砌懷念讓劇情變得狗血,stubborn,0,0
+2018,broken,深愛了多年又何必毀了經典,regret,0,2
+2018,broken,都已成年不拖不欠浪費時間是我情願,stubborn,2,0
+2018,broken,像謝幕的演員眼看著燈光熄滅,neutral,0,0
+2018,broken,來不及再轟轟烈烈,regret,0,0
+2018,broken,就保留告別的尊嚴,stubborn,0,0
+2018,broken,我愛你不後悔也尊重故事結尾,stubborn,3,3
+2018,broken,分手應該體面,stubborn,0,0
+2018,broken,誰都不要說抱歉,stubborn,0,0
+2018,broken,何來虧欠,stubborn,0,0
+2018,broken,我敢給就敢心碎,stubborn,2,0
+2018,broken,鏡頭前面是從前的我們在喝彩,depressed,4,0
+2018,broken,流著淚聲嘶力竭,depressed,0,0
+2018,broken,離開也很體面,stubborn,0,0
+2018,broken,才沒辜負這些年愛得熱烈認真付出的畫面,stubborn,0,7
+2018,broken,別讓執念毀掉了昨天,stubborn,0,0
+2018,broken,我愛過你俐落乾脆,stubborn,3,3
+2018,broken,最熟悉的街主角卻換了人演,depressed,0,0
+2018,broken,我哭到哽咽心再痛就當破繭,depressed,2,0
+2018,broken,來不及再轟轟烈烈,regret,0,0
+2018,broken,就保留告別的尊嚴,stubborn,0,0
+2018,broken,我愛你不後悔也尊重故事結尾,stubborn,3,3
+2018,broken,分手應該體面,stubborn,0,0
+2018,broken,誰都不要說抱歉,stubborn,0,0
+2018,broken,何來虧欠,stubborn,0,0
+2018,broken,我敢給就敢心碎,stubborn,2,0
+2018,broken,鏡頭前面是從前的我們在喝彩,depressed,4,0
+2018,broken,流著淚聲嘶力竭,depressed,0,0
+2018,broken,離開也很體面,stubborn,0,0
+2018,broken,才沒辜負這些年愛得熱烈認真付出的畫面,stubborn,0,7
+2018,broken,別讓執念毀掉了昨天,stubborn,0,0
+2018,broken,我愛過你俐落乾脆,stubborn,3,3
+2018,broken,再見,neutral,0,0
+2018,broken,不負遇見,stubborn,0,0
+2017,prepared,我從來不說話因為我害怕沒有人回答,passive,2,0
+2017,prepared,我從來不掙扎因為我知道這世界太大,passive,2,0
+2017,prepared,太多時間浪費,passive,0,0
+2017,prepared,太多事要面對,passive,0,0
+2017,prepared,太多已無所謂,passive,0,0
+2017,prepared,太多難辨真偽,passive,0,0
+2017,prepared,太多紛擾是非,passive,0,0
+2017,prepared,在你身邊是誰,notSure,1,0
+2017,prepared,最渺小的我 有大大的夢,stubborn,2,0
+2017,prepared,時間向前走一定只有路口沒有盡頭,aggressive,0,0
+2017,prepared,紛紛擾擾這個世界 所有的了解,neutral,0,0
+2017,prepared,只要 讓我留在你身邊,aggressive,3,0
+2017,prepared,最渺小的我 有大大的夢,stubborn,2,0
+2017,prepared,我願意安靜的活在每個有你的角落,aggressive,3,0
+2017,prepared,如果生活還有什麼 會讓你難過,aggressive,1,0
+2017,prepared,別怕 讓我留在你身邊 都陪你渡過,aggressive,3,0
+2017,prepared,最渺小的我 最卑微的夢,aggressive,2,0
+2017,prepared,我發現這世界沒有那麼那麼的不同,neutral,2,0
+2017,prepared,現實如果對你不公 別計較太多,aggressive,1,0
+2017,prepared,走吧 暴風雨後的彩虹,aggressive,0,0
+2017,prepared,也許會落空 也許會普通,notSure,0,0
+2017,prepared,也許這庸庸碌碌的黑白世界你不懂,notSure,1,0
+2017,prepared,生命中所有的路口 絕不是盡頭,aggressive,0,0
+2017,prepared,別怕 讓我留在你身邊 都陪你渡過,aggressive,3,0
+2016,broken,原諒我這一首 不為誰而作的歌感覺上彷彿窗外的夜色,neutral,2,0
+2016,broken,曾經有那一刻 回頭竟然認不得,depressed,0,0
+2016,broken,需要 從記憶 再摸索 的人 和他們 關心的地方和那些 走過的 請等一等,depressed,6,0
+2016,broken,夢為努力澆了水,aggressive,0,0
+2016,broken,愛在背後往前推,aggressive,0,1
+2016,broken,當我抬起頭兒才發覺 我是不是忘了誰,depressed,2,0
+2016,broken,累到整夜不能睡,neutral,0,0
+2016,broken,夜色哪裡都是美,neutral,0,0
+2016,broken,一定有個人 他 躲過 避過 閃過 瞞過,depressed,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,原諒我這一首 不為誰而作的歌感覺上彷彿窗外的夜色,neutral,2,0
+2016,broken,曾經有那一刻 回頭竟然認不得,depressed,0,0
+2016,broken,需要 從記憶 再摸索 的人 和他們 關心的地方和那些 走過的,depressed,6,0
+2016,broken,夢為努力澆了水,aggressive,0,0
+2016,broken,愛在背後往前推,aggressive,0,1
+2016,broken,當我抬起頭兒才發覺 我是不是忘了誰,notSure,2,0
+2016,broken,累到整夜不能睡,neutral,0,0
+2016,broken,夜色哪裡都是美,neutral,0,0
+2016,broken,一定有個人 他 躲過 避過 閃過 瞞過,depressed,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,也許在真實 面對自己才 不顧一切去探究當初我害怕面對,regret,2,0
+2016,broken,夢為努力澆了水,aggressive,0,0
+2016,broken,愛在背後往前推,aggressive,0,1
+2016,broken,當我抬起頭兒才發覺 我是不是忘了誰,depressed,2,0
+2016,broken,累到整夜不能睡,neutral,0,0
+2016,broken,夜色哪裡都是美,neutral,0,0
+2016,broken,一定有個她 躲過 避過 閃過 瞞過,depressed,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,他是誰,notSure,5,0
+2016,broken,他是誰,notSure,5,0
+2015,broken,我聽見雨滴落在青青草地,neutral,2,0
+2015,broken,我聽見遠方下課鐘聲響起,neutral,2,0
+2015,broken,可是我沒有聽見你的聲音認真 呼喚我姓名,depressed,3,0
+2015,broken,愛上你的時候還不懂感情,depressed,1,3
+2015,broken,離別了才覺得刻骨 銘心,depressed,0,0
+2015,broken,為什麼沒有發現遇見了你是生命最好的事情,regret,1,0
+2015,broken,也許當時忙著微笑和哭泣,neutral,0,0
+2015,broken,忙著追逐天空中的流星,neutral,0,0
+2015,broken,人理所當然的忘記,depressed,0,0
+2015,broken,是誰風裏雨裏一直默默守護在原地,depressed,0,0
+2015,broken,原來你是我最想留住的幸運,depressed,3,0
+2015,broken,原來我們和愛情曾經靠得那麼近,depressed,4,1
+2015,broken,那為我對抗世界的決定,aggressive,2,0
+2015,broken,那陪我淋的雨,aggressive,2,0
+2015,broken,一幕幕都是你 一塵不染的真心,aggressive,1,0
+2015,broken,與你相遇 好幸運,aggressive,1,0
+2015,broken,可我已失去為你淚流滿面的權利,depressed,3,0
+2015,broken,但願在我看不到的天際你張開了雙翼,hope,3,0
+2015,broken,遇見你的註定,hope,1,0
+2015,broken,她會有多幸運,hurtHope,5,0
+2015,broken,青春是段跌跌撞撞的旅行,neutral,0,0
+2015,broken,擁有著後知後覺的美麗,neutral,0,0
+2015,broken,來不及感謝是你給我勇氣讓我能做回我自己,regret,3,0
+2015,broken,也許當時忙著微笑和哭泣,neutral,0,0
+2015,broken,忙著追逐天空中的流星,neutral,0,0
+2015,broken,人理所當然的忘記,depressed,0,0
+2015,broken,是誰風裏雨裏一直默默守護在原地,depressed,0,0
+2015,broken,原來你是我最想留住的幸運,depressed,1,0
+2015,broken,原來我們和愛情曾經靠得那麼近,depressed,4,1
+2015,broken,那為我對抗世界的決定,aggressive,2,0
+2015,broken,那陪我淋的雨,aggressive,2,0
+2015,broken,一幕幕都是你 一塵不染的真心,aggressive,1,0
+2015,broken,與你相遇 好幸運,aggressive,1,0
+2015,broken,可我已失去為你淚流滿面的權利,depressed,3,0
+2015,broken,但願在我看不到的天際你張開了雙翼,hope,3,0
+2015,broken,遇見你的註定,hope,1,0
+2015,broken,她會有多幸運,hurtHope,5,0
+2014,broken,你留的感動 你留的感傷都一起打包 都寄給遺忘,depressed,1,0
+2014,broken,整潔的房間 寬了一半的床,depressed,0,0
+2014,broken,單身的牙刷 像低頭在想,depressed,0,0
+2014,broken,多真心的給予 多貼心的迴響,aggressive,0,0
+2014,broken,是什麼腐蝕你給我的夢想,depressed,3,0
+2014,broken,靠一點點美好 撐長長的迷惘,hope,0,0
+2014,broken,終究會走到 得分岔的地方,depressed,0,0
+2014,broken,別給我像是天堂的懸崖,depressed,2,0
+2014,broken,別逼我跳下無底的傷懷,depressed,2,0
+2014,broken,不再幻想 你的花海,stubborn,1,0
+2014,broken,有一支薔薇能夠享受唯一寵愛,depressed,0,1
+2014,broken,別給我像是天堂的懸崖,depressed,2,0
+2014,broken,別推我到會後悔的未來,depressed,2,0
+2014,broken,最怕夜裡 浪漫燈海,depressed,0,0
+2014,broken,你不斷點煙我看窗外沒有對白,depressed,3,0
+2014,broken,時間在趕路 回憶在擺盪,depressed,0,0
+2014,broken,音樂在流淚 歌詞在療傷,depressed,0,0
+2014,broken,腦袋夠懂事 但內心不長大,depressed,0,0
+2014,broken,復原才很難 情緒才複雜,depressed,0,0
+2014,broken,多醉心的擁吻 多開心的凝望,aggressive,0,0
+2014,broken,是什麼搶奪 你給我的太陽,depressed,3,0
+2014,broken,用淡淡的祈禱 撐濃濃的絕望,hope,0,0
+2014,broken,憑什麼逃離 像影子的悲傷,depressed,0,0
+2014,broken,別給我像是天堂的懸崖,depressed,2,0
+2014,broken,別逼我跳下無底的傷懷,depressed,2,0
+2014,broken,不再幻想 你的花海,stubborn,1,0
+2014,broken,有一支薔薇能夠享受唯一寵愛,depressed,0,1
+2014,broken,別給我像是天堂的懸崖,depressed,2,0
+2014,broken,別推我到會後悔的未來,depressed,2,0
+2014,broken,最怕夜裡 浪漫燈海,depressed,0,0
+2014,broken,你不斷點煙我看窗外沒有對白,depressed,3,0
+2014,broken,最難耐 的傷害 是不放 又不愛,depressed,0,5
+2013,broken,你哭的太累了,depressed,1,0
+2013,broken,你傷的太深了,depressed,1,0
+2013,broken,你愛的太傻了,depressed,1,2
+2013,broken,你哭的就像 是末日 要來了,depressed,1,0
+2013,broken,所以你聽慢歌 很慢很慢的歌,neutral,1,0
+2013,broken,聽得心如刀割,depressed,0,0
+2013,broken,是不是應該 換一種 節奏了,neutral,0,0
+2013,broken,不要再問 誰是對的 誰是錯的 誰是誰非 誰又虧欠誰了,aggressive,0,0
+2013,broken,反正錯了 反正輸了,aggressive,0,0
+2013,broken,反正自己 陪自己快樂,aggressive,2,0
+2013,broken,我不管 你是誰的 誰是你的 我是我的,stubborn,3,0
+2013,broken,讓心跳 動次動次 動次動次 感覺活著,aggressive,0,0
+2013,broken,我不管 站著坐著 躺著趴著 都要快樂,aggressive,2,0
+2013,broken,讓音樂 動次動次 動次動次 快要聾了,aggressive,0,0
+2013,broken,不管了 不想了 不等了 不要不快樂,stubborn,0,0
+2013,broken,傷心的人別聽慢歌,stubborn,0,0
+2013,broken,人生分分合合 愛情拉拉扯扯 一路曲曲折折,neutral,0,1
+2013,broken,我還是期待 明日的 新景色,hope,2,0
+2013,broken,憤青都釋懷了 光棍都戀愛了 悲劇都圓滿了,aggressive,0,1
+2013,broken,每一段爭執 都飛出 和平鴿,aggressive,0,0
+2013,broken,不要再問誰是對的 誰是錯的 誰是誰非 誰又虧欠誰了,aggressive,0,0
+2013,broken,反正錯了 反正輸了,aggressive,0,0
+2013,broken,反正自己 陪自己快樂,aggressive,2,0
+2013,broken,我不管 你是誰的 誰是你的 我是我的,stubborn,3,0
+2013,broken,讓心跳 動次動次 動次動次 感覺活著,aggressive,0,0
+2013,broken,我不管 站著坐著 躺著趴著 都要快樂,aggressive,2,0
+2013,broken,讓音樂 動次動次 動次動次 快要聾了,aggressive,0,0
+2013,broken,不管了 不想了 不等了 不要不快樂,stubborn,0,0
+2013,broken,傷心的人別聽慢歌,stubborn,0,0
+2013,broken,我不管 你是誰的 誰是你的 我是我的,stubborn,3,0
+2013,broken,讓心跳 動次動次 動次動次 感覺活著,aggressive,0,0
+2013,broken,我不管 站著坐著 躺著趴著 都要快樂,aggressive,2,0
+2013,broken,讓音樂 動次動次 動次動次 快要聾了,aggressive,0,0
+2013,broken,不管了 不想了 不等了 此時和此刻 不得不去 貫徹快樂,stubborn,0,0
+2013,broken,不管了 不想了 不等了 不要不快樂,stubborn,0,0
+2013,broken,傷心的人別聽慢歌,stubborn,0,0
