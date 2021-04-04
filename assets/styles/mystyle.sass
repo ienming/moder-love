@@ -1,7 +1,12 @@
 $white: #ffffff
+$black: #000000
+$EaseOutQuint : cubic-bezier(0.22, 1, 0.36, 1)
 
 main
     position: relative
+
+article
+    padding: 150px 200px 140px 200px
 
 .lyrics-container
     background-color: $white
@@ -15,3 +20,44 @@ main
     &.show
         transform: scale(1)
         opacity: 1
+
+#controller
+    position: fixed
+    bottom: 0
+    left: 0
+    background-color: #222
+    // background: linear-gradient(51deg, rgba(255,0,0,1) 0%, rgba(243,255,0,1) 31%, rgba(18,228,255,1) 58%, rgba(0,97,255,1) 80%, rgba(220,0,255,1) 100%)
+    height: unset
+    width: 100%
+    padding: 30px 0
+    z-index: 99
+
+.buttons-control
+    display: flex
+    align-items: center
+    justify-content: center
+    color: $white
+
+.mybtn
+    font-size: .8rem
+    margin: 0 1rem
+    padding: .25rem 1rem
+    background-color: transparent
+    border: 1px solid $white
+    color: $white
+    border-radius: 1rem
+    transition: .6s $EaseOutQuint
+    opacity: 0.5
+    &:hover
+        cursor: pointer
+        background-color: transparentize($white, 0.85)
+
+
+.mybtn.show
+    opacity: 1
+
+.t-txt
+    font-size: .8rem
+    color: $white
+    padding: 0
+    margin: 0

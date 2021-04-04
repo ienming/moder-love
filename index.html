@@ -7,6 +7,11 @@
     <title>Moder Love</title>
     <link rel="stylesheet" href="assets/styles/mystyle.css" />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
       html,
       body {
         height: 100%;
@@ -14,49 +19,110 @@
         padding: 0;
         margin: 0;
       }
+
+      article {
+        background-color: #000;
+        color: #fff;
+      }
     </style>
   </head>
   <body>
+    <div id="controller">
+      <p class="t-txt" style="margin-bottom: 1rem; margin-left: 135px">
+        Show the lyrics with attitudes:
+      </p>
+      <div class="buttons-control" id="buttons">
+        <div
+          class="mybtn"
+          :class="el.class"
+          v-for="(el, index) of buttons"
+          v-on:click="filterAttitude(index, el.type)"
+          :key="el.type"
+        >
+          {{el.title}}
+        </div>
+      </div>
+    </div>
+    <article>
+      <h1>Modern Love</h1>
+      <p>Project description...</p>
+    </article>
+    <!-- Vue.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"
+      integrity="sha512-YXLGLsQBiwHPHLCAA9npZWhADUsHECjkZ71D1uzT2Hpop82/eLnmFb6b0jo8pK4T0Au0g2FETrRJNblF/46ZzQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="assets/js/custom.js"></script>
     <!-- P5.js -->
     <script src="assets/js/p5.min.js"></script>
     <script>
-      function Data(year, lyrics, attitude, love, lovePos) {
+      function Data(year, lyrics, attitude, love, lovePos, person, sin_arr) {
+        this.show = true;
         this.year = year;
         this.lyrics = lyrics;
         this.attitude = attitude;
         this.love = love;
         this.lovePos = lovePos;
+        this.person = person;
         this.loveColor = loveColorPalette(this.love);
         this.dataX = undefined;
         this.dataY = undefined;
+        this.sin = sin_arr;
+        this.angle = 0;
+        this.offset = 0;
         this.bg = colorPalette(this.attitude);
         this.hover = false;
         this.display = function (x, y) {
           push();
           translate(x + offsetX, y + offsetY);
-          //text(this.lyrics.length, 0, 0); //debug length of lyrics
           strokeWeight(0.5);
-          stroke(0, 0, 100);
           // color
-          fill(this.bg);
-          rect(0, 0, this.lyrics.length * em, h);
+          stroke(this.bg);
+          if (this.show && this.hover) {
+            fill(this.bg);
+            rect(0, 0, this.lyrics.length * em, h);
+            stroke(0, 0, 100);
+          } else if (this.show && !this.hover) {
+            noFill();
+          } else if (!this.show) {
+            noFill();
+            stroke(10);
+          }
+          for (let j = 0; j < this.sin.length; j++) {
+            beginShape();
+            for (let i = 0; i < this.lyrics.length; i++) {
+              this.angle = TWO_PI/i + this.offset;
+              vertex(i * em, sin(this.angle) * this.sin[j].h + h / 2);
+            }
+            endShape();
+          }
+          this.offset += 0.03;
           // Draw the position of "love"
           if (this.love != 0) {
             translate(0, 0);
             fill(this.loveColor);
+            strokeWeight(0.5);
             noStroke();
-            quad(
-              this.lovePos,
-              -5,
-              this.lovePos + 5,
-              0,
-              this.lovePos,
-              5,
-              this.lovePos - 5,
-              0
-            );
-            stroke(this.loveColor);
-            line(this.lovePos, 0, this.lovePos, h);
+            rect(this.lovePos-3,-3,6,6);
+            stroke(0, 0, 100);
+          }
+          //Draw the type of "subject"
+          if (this.person != 0) {
+            translate((this.lyrics.length * em) / 2, h / 2);
+            stroke(0, 0, 100);
+            if (this.person == 1) {
+              line(0, 0, 0, -10);
+            } else if (this.person == 2) {
+              line(0, 0, 0, 10);
+            } else if (this.person == 3) {
+              line(0, -10, 0, 10);
+            } else if (this.person == 4) {
+              noFill();
+              circle(0, 0, 10);
+            }
+            fill(0, 0, 100);
+            circle(0, 0, 4);
           }
           pop();
 
@@ -72,50 +138,72 @@
           title: "想見你想見你想見你",
           year: "2020",
           singer: "八三夭",
-        },{
+        },
+        {
           title: "怎麼了",
           year: "2019",
           singer: "周興哲",
-        },{
+        },
+        {
           title: "體面",
           year: "2018",
           singer: "于文文",
-        },{
+        },
+        {
           title: "讓我留在你身邊",
           year: "2017",
           singer: "陳奕迅",
-        },{
+        },
+        {
           title: "不為誰而作的歌",
           year: "2016",
           singer: "林俊傑",
-        },{
+        },
+        {
           title: "小幸運",
           year: "2015",
           singer: "田馥甄",
-        },{
+        },
+        {
           title: "像是天堂的懸崖",
           year: "2014",
           singer: "李佳薇",
-        },{
+        },
+        {
           title: "傷心的人別聽慢歌",
           year: "2013",
           singer: "五月天",
+        },
+        {
+          title: "我不願讓你一個人",
+          year: "2012",
+          singer: "五月天",
         },{
-          title: "夜曲",
-          year: "2005",
-          singer: "周杰倫",
+          title: "天后",
+          year: "2011",
+          singer: "陳勢安",
+        },{
+          title: "洋蔥",
+          year: "2010",
+          singer: "叮噹",
+        },{
+          title: "沒有如果",
+          year: "2009",
+          singer: "梁靜茹",
         },
       ];
     </script>
     <script>
-      let table;
+      let song, table;
       let mouseX, mouseY, cnv, clickData;
-      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 240, 180, 30];
-      let gap = h*1.5;
-      let rem = 16;
+      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 200, 0, 75];
+      let [btnX, btnY] = [10, 10];
+      let gap = h*1.25;
+      let rem = 12;
       let data_arr = [],
         all_data_arr = [];
       let beginYear = "2020";
+      let article = document.querySelector("article");
 
       function preload() {
         //load data
@@ -123,7 +211,7 @@
       }
 
       function setup() {
-        cnv = createCanvas(windowWidth, offsetY*2+16*h+(16-1)*gap);
+        cnv = createCanvas(windowWidth, offsetY * 2 + 16 * h + (16 - 1) * gap);
         colorMode(HSB);
 
         for (let i = 0; i < table.getRowCount(); i++) {
@@ -134,9 +222,29 @@
           let attitude = row.getString("Attitude");
           let love = row.getNum("Love");
           let lovePos = lyrics.indexOf("愛");
+          let person = row.getNum("Person");
+          let sinObj = undefined;
+          let sin_arr = [];
+
+          //prepare sin data
+          for (let i = 0; i < 10; i++) {
+            let sin_h = random(-30, 30);
+            sinObj = {
+              h: sin_h,
+            };
+            sin_arr.push(sinObj);
+          }
 
           //Create object
-          let data_obj = new Data(year, lyrics, attitude, love, lovePos);
+          let data_obj = new Data(
+            year,
+            lyrics,
+            attitude,
+            love,
+            lovePos,
+            person,
+            sin_arr
+          );
 
           // Switch to next year into another array
           if (year == beginYear) {
@@ -154,18 +262,18 @@
       }
 
       function draw() {
-        background(0, 0, 90);
+        cnv.background(0, 0, 0);
 
         for (let i = 0; i < all_data_arr.length; i++) {
           // Description
           // Render song information
-          // renderSong(
-          //   songs[i].title,
-          //   songs[i].year,
-          //   songs[i].singer,
-          //   offsetX-20,
-          //   y + offsetY + h/3.75
-          // );
+          renderSong(
+            songs[i].title,
+            songs[i].year,
+            songs[i].singer,
+            offsetX - 10,
+            offsetY + y + 30
+          );
           for (let j = 0; j < all_data_arr[i].length; j++) {
             let nowData = all_data_arr[i][j];
             let lyricsLength = nowData.lyrics.length;
@@ -193,14 +301,14 @@
               //hover on data
               mouseX > nowData.dataX &&
               mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY+window.scrollY > nowData.dataY &&
-              mouseY+window.scrollY < nowData.dataY + h
+              mouseY + window.scrollY - article.offsetHeight > nowData.dataY &&
+              mouseY + window.scrollY - article.offsetHeight < nowData.dataY + h
             ) {
               if (!nowData.hover) {
                 nowData.bg = color(
                   hue(nowData.bg),
                   saturation(nowData.bg),
-                  brightness(nowData.bg) + 10
+                  brightness(nowData.bg) + 15
                 );
                 nowData.hover = true;
               }
@@ -211,7 +319,7 @@
                 nowData.bg = color(
                   hue(nowData.bg),
                   saturation(nowData.bg),
-                  brightness(nowData.bg) - 10
+                  brightness(nowData.bg) - 15
                 );
               }
               nowData.hover = false;
@@ -224,15 +332,17 @@
         mouseX = e.clientX;
         mouseY = e.clientY;
         clickData = false;
+        // console.log(mouseX, mouseY, window.scrollY, article.offsetHeight);
+
+        //if click on data
         for (let i = 0; i < all_data_arr.length; i++) {
           for (let j = 0; j < all_data_arr[i].length; j++) {
             let nowData = all_data_arr[i][j];
             if (
-              //click on data
               mouseX > nowData.dataX &&
               mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY+window.scrollY > nowData.dataY &&
-              mouseY+window.scrollY < nowData.dataY + h
+              mouseY + window.scrollY - article.offsetHeight > nowData.dataY &&
+              mouseY + window.scrollY - article.offsetHeight < nowData.dataY + h
             ) {
               clickData = true;
               // remove div now
@@ -252,7 +362,8 @@
                 <span>${nowData.lyrics}</span>
               `;
               div.classList.add("lyrics-container");
-              div.style.top = mouseY+window.scrollY + "px";
+              div.style.top =
+                mouseY + window.scrollY - article.offsetHeight + "px";
               div.style.left = mouseX + "px";
               if (!document.querySelector(".lyrics-container")) {
                 document.querySelector("main").appendChild(div);
@@ -277,13 +388,13 @@
 
       function renderSong(title, year, singer, x, y) {
         push();
-        fill(0, 0, 100);
-        textSize(rem);
+        fill(0, 0, 95);
         textAlign(RIGHT);
-        text(title, x, y-rem*0.25);
-        textSize(rem * 1.2);
-        text(year, x, y + rem * 1.75);
-        textSize(rem*0.8);
+        textSize(rem);
+        text(title, x, y - rem * 0.25);
+        textSize(rem * 1.25);
+        text(year, x, y + rem * 1.5);
+        textSize(rem * 0.75);
         text(singer, x, y + rem * 3);
         pop();
       }
@@ -293,34 +404,38 @@
       }
 
       function colorPalette(atud) {
-        let c;
+        let c, hue, step, coldHue;
+        hue = 330;
+        coldHue = 150;
+        step = 30;
+
         switch (atud) {
           case "aggressive":
-            c = color(17, 78, 94);
+            c = color(random(hue, hue + step), 70, 90);
             break;
           case "hope":
-            c = color(37, 69, 100);
+            c = color(random(hue + step, hue + step * 2), 70, 90);
             break;
           case "stubborn":
-            c = color(77, 49, 80);
+            c = color(random(hue + step * 2, hue + step * 3), 70, 90);
             break;
-          case "notSure":
-            c = color(0, 69, 100);
-            break;
-          case "depressed":
-            c = color(210, 8, 88);
+          case "nervous":
+            c = color(random(hue + step * 3, hue + step * 4), 70, 90);
             break;
           case "neutral":
-            c = color(0, 0, 35);
+            c = color(0, 0, 60);
+            break;
+          case "depressed":
+            c = color(random(coldHue + step, coldHue + step * 2), 70, 60);
             break;
           case "regret":
-            c = color(204, 67, 54);
+            c = color(random(coldHue + step * 2, coldHue + step * 3), 50, 60);
             break;
           case "passive":
-            c = color(184, 77, 54);
+            c = color(random(coldHue + step * 3, coldHue + step * 4), 40, 60);
             break;
           case "hurtHope":
-            c = color(220, 67, 54);
+            c = color(random(coldHue + step * 4, coldHue + step * 5), 40, 60);
             break;
         }
         return c;
@@ -330,25 +445,25 @@
         let c;
         switch (lv) {
           case 1: //noun love
-            c = color(0, 84, 75);
+            c = color("#ff6d94");
             break;
-          case 2:
-            c = color(0, 64, 100);
+          case 2: //love as a verb
+            c = color("#8c6af2");
             break;
           case 3: //love you
-            c = color(0, 46, 100);
+            c = color("#ed3434");
             break;
-          case 4:
-            c = color(0, 0, 35);
+          case 4: //love me
+            c = color("#ff5bf4");
             break;
-          case 5:
-            c = color(204, 67, 54);
+          case 5: //without love
+            c = color("#6bc8ff");
             break;
-          case 6:
-            c = color(204, 67, 54);
+          case 6: //like
+            c = color("#ffc249");
             break;
           case 7:
-            c = color(234, 67, 54);
+            c = color("#2dffc7");
             break;
         }
         return c;
