@@ -18,12 +18,15 @@
         width: 100%;
         padding: 0;
         margin: 0;
-      }
-
-      article {
         background-color: #000;
         color: #fff;
       }
+
+      /* #legendContainer{
+        position: fixed;
+        top: 0;
+        z-index: 99;
+      } */
     </style>
   </head>
   <body>
@@ -46,7 +49,11 @@
     <article>
       <h1>Modern Love</h1>
       <p>Project description...</p>
+      <div id="legendContainer"></div>
     </article>
+    <main>
+      <div id="datavzContainer"></div>
+    </main>
     <!-- Vue.js -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"
@@ -57,417 +64,569 @@
     <!-- P5.js -->
     <script src="assets/js/p5.min.js"></script>
     <script>
-      function Data(year, lyrics, attitude, love, lovePos, person, sin_arr) {
-        this.show = true;
-        this.year = year;
-        this.lyrics = lyrics;
-        this.attitude = attitude;
-        this.love = love;
-        this.lovePos = lovePos;
-        this.person = person;
-        this.loveColor = loveColorPalette(this.love);
-        this.dataX = undefined;
-        this.dataY = undefined;
-        this.sin = sin_arr;
-        this.angle = 0;
-        this.offset = 0;
-        this.bg = colorPalette(this.attitude);
-        this.hover = false;
-        this.display = function (x, y) {
-          push();
-          translate(x + offsetX, y + offsetY);
-          strokeWeight(0.5);
-          // color
-          stroke(this.bg);
-          if (this.show && this.hover) {
-            fill(this.bg);
-            rect(0, 0, this.lyrics.length * em, h);
-            stroke(0, 0, 100);
-          } else if (this.show && !this.hover) {
-            noFill();
-          } else if (!this.show) {
-            noFill();
-            stroke(10);
-          }
-          for (let j = 0; j < this.sin.length; j++) {
-            beginShape();
-            for (let i = 0; i < this.lyrics.length; i++) {
-              this.angle = TWO_PI/i + this.offset;
-              vertex(i * em, sin(this.angle) * this.sin[j].h + h / 2);
-            }
-            endShape();
-          }
-          this.offset += 0.03;
-          // Draw the position of "love"
-          if (this.love != 0) {
-            translate(0, 0);
-            fill(this.loveColor);
-            strokeWeight(0.5);
-            noStroke();
-            rect(this.lovePos-3,-3,6,6);
-            stroke(0, 0, 100);
-          }
-          //Draw the type of "subject"
-          if (this.person != 0) {
-            translate((this.lyrics.length * em) / 2, h / 2);
-            stroke(0, 0, 100);
-            if (this.person == 1) {
-              line(0, 0, 0, -10);
-            } else if (this.person == 2) {
-              line(0, 0, 0, 10);
-            } else if (this.person == 3) {
-              line(0, -10, 0, 10);
-            } else if (this.person == 4) {
-              noFill();
-              circle(0, 0, 10);
-            }
-            fill(0, 0, 100);
-            circle(0, 0, 4);
-          }
-          pop();
-
-          // set x and y position into this object for listener
-          this.dataX = x + offsetX;
-          this.dataY = y + offsetY;
-        };
-      }
-
-      // Songs information
-      let songs = [
-        {
-          title: "想見你想見你想見你",
-          year: "2020",
-          singer: "八三夭",
-        },
-        {
-          title: "怎麼了",
-          year: "2019",
-          singer: "周興哲",
-        },
-        {
-          title: "體面",
-          year: "2018",
-          singer: "于文文",
-        },
-        {
-          title: "讓我留在你身邊",
-          year: "2017",
-          singer: "陳奕迅",
-        },
-        {
-          title: "不為誰而作的歌",
-          year: "2016",
-          singer: "林俊傑",
-        },
-        {
-          title: "小幸運",
-          year: "2015",
-          singer: "田馥甄",
-        },
-        {
-          title: "像是天堂的懸崖",
-          year: "2014",
-          singer: "李佳薇",
-        },
-        {
-          title: "傷心的人別聽慢歌",
-          year: "2013",
-          singer: "五月天",
-        },
-        {
-          title: "我不願讓你一個人",
-          year: "2012",
-          singer: "五月天",
-        },{
-          title: "天后",
-          year: "2011",
-          singer: "陳勢安",
-        },{
-          title: "洋蔥",
-          year: "2010",
-          singer: "叮噹",
-        },{
-          title: "沒有如果",
-          year: "2009",
-          singer: "梁靜茹",
-        },
-      ];
-    </script>
-    <script>
-      let song, table;
-      let mouseX, mouseY, cnv, clickData;
-      let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 200, 0, 75];
-      let [btnX, btnY] = [10, 10];
-      let gap = h*1.25;
-      let rem = 12;
       let data_arr = [],
         all_data_arr = [];
-      let beginYear = "2020";
-      let article = document.querySelector("article");
-
-      function preload() {
-        //load data
-        table = loadTable("assets/data/data.csv", "csv", "header");
-      }
-
-      function setup() {
-        cnv = createCanvas(windowWidth, offsetY * 2 + 16 * h + (16 - 1) * gap);
-        colorMode(HSB);
-
-        for (let i = 0; i < table.getRowCount(); i++) {
-          let row = table.getRow(i);
-
-          let year = row.getString("Year");
-          let lyrics = row.getString("String").replace(/\s*/g, "");
-          let attitude = row.getString("Attitude");
-          let love = row.getNum("Love");
-          let lovePos = lyrics.indexOf("愛");
-          let person = row.getNum("Person");
-          let sinObj = undefined;
-          let sin_arr = [];
-
-          //prepare sin data
-          for (let i = 0; i < 10; i++) {
-            let sin_h = random(-30, 30);
-            sinObj = {
-              h: sin_h,
-            };
-            sin_arr.push(sinObj);
-          }
-
-          //Create object
-          let data_obj = new Data(
-            year,
-            lyrics,
-            attitude,
-            love,
-            lovePos,
-            person,
-            sin_arr
-          );
-
-          // Switch to next year into another array
-          if (year == beginYear) {
-            data_arr.push(data_obj);
-            if (i == table.getRowCount() - 1) {
-              all_data_arr.push(data_arr);
+      let p5Main = new p5((sketch) => {
+        function Data(year, lyrics, attitude, love, lovePos, person, sin_arr) {
+          this.show = true;
+          this.year = year;
+          this.lyrics = lyrics;
+          this.attitude = attitude;
+          this.love = love;
+          this.lovePos = lovePos;
+          this.person = person;
+          this.loveColor = loveColorPalette(this.love);
+          this.dataX = undefined;
+          this.dataY = undefined;
+          this.sin = sin_arr;
+          this.angle = 0;
+          this.offset = 0;
+          this.bg = colorPalette(this.attitude);
+          this.hover = false;
+          this.display = function (x, y) {
+            sketch.push();
+            sketch.translate(x + offsetX, y + offsetY);
+            sketch.strokeWeight(0.5);
+            // color
+            sketch.stroke(this.bg);
+            if (this.show && this.hover) {
+              sketch.fill(this.bg);
+              sketch.rect(0, 0, this.lyrics.length * em, h);
+              sketch.stroke(0, 0, 100);
+            } else if (this.show && !this.hover) {
+              sketch.noFill();
+            } else if (!this.show) {
+              sketch.noFill();
+              sketch.stroke(10);
             }
-          } else {
-            beginYear = year;
-            all_data_arr.push(data_arr);
-            data_arr = [];
-            data_arr.push(data_obj);
-          }
-        }
-      }
-
-      function draw() {
-        cnv.background(0, 0, 0);
-
-        for (let i = 0; i < all_data_arr.length; i++) {
-          // Description
-          // Render song information
-          renderSong(
-            songs[i].title,
-            songs[i].year,
-            songs[i].singer,
-            offsetX - 10,
-            offsetY + y + 30
-          );
-          for (let j = 0; j < all_data_arr[i].length; j++) {
-            let nowData = all_data_arr[i][j];
-            let lyricsLength = nowData.lyrics.length;
-            // Draw
-            nowData.display(x, y);
-            x += lyricsLength * em;
-          }
-          y += gap;
-          x = 10;
-        }
-        y = 20;
-
-        // Eventlistener
-        cnv.mouseClicked(clickPos);
-        cnv.mouseMoved(hoverPos);
-      }
-
-      function hoverPos(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        for (let i = 0; i < all_data_arr.length; i++) {
-          for (let j = 0; j < all_data_arr[i].length; j++) {
-            let nowData = all_data_arr[i][j];
-            if (
-              //hover on data
-              mouseX > nowData.dataX &&
-              mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY + window.scrollY - article.offsetHeight > nowData.dataY &&
-              mouseY + window.scrollY - article.offsetHeight < nowData.dataY + h
-            ) {
-              if (!nowData.hover) {
-                nowData.bg = color(
-                  hue(nowData.bg),
-                  saturation(nowData.bg),
-                  brightness(nowData.bg) + 15
+            for (let j = 0; j < this.sin.length; j++) {
+              sketch.beginShape();
+              for (let i = 0; i < this.lyrics.length; i++) {
+                this.angle = sketch.TWO_PI / i + this.offset;
+                sketch.vertex(
+                  i * em,
+                  sketch.sin(this.angle) * this.sin[j].h + h / 2
                 );
-                nowData.hover = true;
+              }
+              sketch.endShape();
+            }
+            this.offset += 0.03;
+            // Draw the position of "love"
+            if (this.love != 0) {
+              sketch.translate(0, 0);
+              sketch.fill(this.loveColor);
+              sketch.strokeWeight(0.5);
+              sketch.noStroke();
+              sketch.rect(this.lovePos - 3, -3, 6, 6);
+              sketch.stroke(0, 0, 100);
+            }
+            //Draw the type of "subject"
+            if (this.person != 0) {
+              sketch.translate((this.lyrics.length * em) / 2, h / 2);
+              sketch.stroke(0, 0, 100);
+              if (this.person == 1) {
+                sketch.line(0, 0, 0, -10);
+              } else if (this.person == 2) {
+                sketch.line(0, 0, 0, 10);
+              } else if (this.person == 3) {
+                sketch.line(0, -10, 0, 10);
+              } else if (this.person == 4) {
+                sketch.noFill();
+                sketch.circle(0, 0, 10);
+              }
+              sketch.fill(0, 0, 100);
+              sketch.circle(0, 0, 4);
+            }
+            sketch.pop();
+
+            // set x and y position into this object for listener
+            this.dataX = x + offsetX;
+            this.dataY = y + offsetY;
+          };
+        }
+
+        // Songs information
+        let songs = [
+          {
+            title: "想見你想見你想見你",
+            year: "2020",
+            singer: "八三夭",
+          },
+          {
+            title: "怎麼了",
+            year: "2019",
+            singer: "周興哲",
+          },
+          {
+            title: "體面",
+            year: "2018",
+            singer: "于文文",
+          },
+          {
+            title: "讓我留在你身邊",
+            year: "2017",
+            singer: "陳奕迅",
+          },
+          {
+            title: "不為誰而作的歌",
+            year: "2016",
+            singer: "林俊傑",
+          },
+          {
+            title: "小幸運",
+            year: "2015",
+            singer: "田馥甄",
+          },
+          {
+            title: "像是天堂的懸崖",
+            year: "2014",
+            singer: "李佳薇",
+          },
+          {
+            title: "傷心的人別聽慢歌",
+            year: "2013",
+            singer: "五月天",
+          },
+          {
+            title: "我不願讓你一個人",
+            year: "2012",
+            singer: "五月天",
+          },
+          {
+            title: "天后",
+            year: "2011",
+            singer: "陳勢安",
+          },
+          {
+            title: "洋蔥",
+            year: "2010",
+            singer: "叮噹",
+          },
+          {
+            title: "沒有如果",
+            year: "2009",
+            singer: "梁靜茹",
+          },
+          {
+            title: "說好的幸福呢",
+            year: "2008",
+            singer: "周杰倫",
+          },
+          {
+            title: "背叛",
+            year: "2007",
+            singer: "曹格",
+          },
+          {
+            title: "千里之外",
+            year: "2006",
+            singer: "周杰倫、費玉清",
+          },
+          {
+            title: "夜曲",
+            year: "2005",
+            singer: "周杰倫",
+          },
+        ];
+
+        let song, table;
+        let mouseX, mouseY, cnv, clickData;
+        let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 200, 0, 75];
+        let [btnX, btnY] = [10, 10];
+        let gap = h * 1.25;
+        let rem = 12;
+        let beginYear = "2020";
+        let article = document.querySelector("article");
+
+        sketch.preload = function () {
+          //load data
+          table = sketch.loadTable("assets/data/data.csv", "csv", "header");
+        };
+
+        sketch.setup = function () {
+          sketch.createCanvas(
+            window.innerWidth,
+            offsetY * 2 + 16 * h + (16 - 1) * gap
+          );
+          sketch.colorMode(sketch.HSB);
+
+          for (let i = 0; i < table.getRowCount(); i++) {
+            let row = table.getRow(i);
+
+            let year = row.getString("Year");
+            let lyrics = row.getString("String").replace(/\s*/g, "");
+            let attitude = row.getString("Attitude");
+            let love = row.getNum("Love");
+            let lovePos = lyrics.indexOf("愛");
+            let person = row.getNum("Person");
+            let sinObj = undefined;
+            let sin_arr = [];
+
+            //prepare sin data
+            for (let i = 0; i < 10; i++) {
+              let sin_h = sketch.random(-30, 30);
+              sinObj = {
+                h: sin_h,
+              };
+              sin_arr.push(sinObj);
+            }
+
+            //Create object
+            let data_obj = new Data(
+              year,
+              lyrics,
+              attitude,
+              love,
+              lovePos,
+              person,
+              sin_arr
+            );
+
+            // Switch to next year into another array
+            if (year == beginYear) {
+              data_arr.push(data_obj);
+              if (i == table.getRowCount() - 1) {
+                all_data_arr.push(data_arr);
               }
             } else {
-              //not hover on NOW data
-              if (nowData.hover) {
-                //just being hover need to change to origin
-                nowData.bg = color(
-                  hue(nowData.bg),
-                  saturation(nowData.bg),
-                  brightness(nowData.bg) - 15
-                );
+              beginYear = year;
+              all_data_arr.push(data_arr);
+              data_arr = [];
+              data_arr.push(data_obj);
+            }
+          }
+        };
+
+        sketch.draw = function () {
+          sketch.background(0, 0, 0);
+
+          for (let i = 0; i < all_data_arr.length; i++) {
+            // Description
+            // Render song information
+            renderSong(
+              songs[i].title,
+              songs[i].year,
+              songs[i].singer,
+              offsetX - 10,
+              offsetY + y + 30
+            );
+            for (let j = 0; j < all_data_arr[i].length; j++) {
+              let nowData = all_data_arr[i][j];
+              let lyricsLength = nowData.lyrics.length;
+              // Draw
+              nowData.display(x, y);
+              x += lyricsLength * em;
+            }
+            y += gap;
+            x = 10;
+          }
+          y = 20;
+
+          // Eventlistener
+          sketch.mouseClicked = (e) => {
+            clickPos(e);
+          };
+          sketch.mouseMoved = (e) => {
+            hoverPos(e);
+          };
+        };
+
+        function hoverPos(e) {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          for (let i = 0; i < all_data_arr.length; i++) {
+            for (let j = 0; j < all_data_arr[i].length; j++) {
+              let nowData = all_data_arr[i][j];
+              if (
+                //hover on data
+                mouseX > nowData.dataX &&
+                mouseX < nowData.dataX + nowData.lyrics.length * em &&
+                mouseY + window.scrollY - article.offsetHeight >
+                  nowData.dataY &&
+                mouseY + window.scrollY - article.offsetHeight <
+                  nowData.dataY + h
+              ) {
+                if (!nowData.hover) {
+                  nowData.bg = sketch.color(
+                    sketch.hue(nowData.bg),
+                    sketch.saturation(nowData.bg),
+                    sketch.brightness(nowData.bg) + 15
+                  );
+                  nowData.hover = true;
+                }
+              } else {
+                //not hover on NOW data
+                if (nowData.hover) {
+                  //just being hover need to change to origin
+                  nowData.bg = sketch.color(
+                    sketch.hue(nowData.bg),
+                    sketch.saturation(nowData.bg),
+                    sketch.brightness(nowData.bg) - 15
+                  );
+                }
+                nowData.hover = false;
               }
-              nowData.hover = false;
             }
           }
         }
-      }
 
-      function clickPos(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        clickData = false;
-        // console.log(mouseX, mouseY, window.scrollY, article.offsetHeight);
+        function clickPos(e) {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          clickData = false;
+          // console.log(mouseX, mouseY, window.scrollY, article.offsetHeight);
 
-        //if click on data
-        for (let i = 0; i < all_data_arr.length; i++) {
-          for (let j = 0; j < all_data_arr[i].length; j++) {
-            let nowData = all_data_arr[i][j];
-            if (
-              mouseX > nowData.dataX &&
-              mouseX < nowData.dataX + nowData.lyrics.length * em &&
-              mouseY + window.scrollY - article.offsetHeight > nowData.dataY &&
-              mouseY + window.scrollY - article.offsetHeight < nowData.dataY + h
-            ) {
-              clickData = true;
-              // remove div now
-              if (document.querySelector(".lyrics-container.show")) {
-                document
-                  .querySelector(".lyrics-container")
-                  .classList.remove("show");
-                document
-                  .querySelector(".lyrics-container:not(.show)")
-                  .addEventListener("transitionend", function () {
-                    this.remove();
-                  });
-              }
-              // append new div
-              let div = document.createElement("div");
-              div.innerHTML = `
-                <span>${nowData.lyrics}</span>
-              `;
-              div.classList.add("lyrics-container");
-              div.style.top =
-                mouseY + window.scrollY - article.offsetHeight + "px";
-              div.style.left = mouseX + "px";
-              if (!document.querySelector(".lyrics-container")) {
-                document.querySelector("main").appendChild(div);
-                window.setTimeout(function () {
+          //if click on data
+          for (let i = 0; i < all_data_arr.length; i++) {
+            for (let j = 0; j < all_data_arr[i].length; j++) {
+              let nowData = all_data_arr[i][j];
+              if (
+                mouseX > nowData.dataX &&
+                mouseX < nowData.dataX + nowData.lyrics.length * em &&
+                mouseY + window.scrollY - article.offsetHeight >
+                  nowData.dataY &&
+                mouseY + window.scrollY - article.offsetHeight <
+                  nowData.dataY + h
+              ) {
+                clickData = true;
+                // remove div now
+                if (document.querySelector(".lyrics-container.show")) {
                   document
                     .querySelector(".lyrics-container")
-                    .classList.add("show");
-                }, 100);
+                    .classList.remove("show");
+                  document
+                    .querySelector(".lyrics-container:not(.show)")
+                    .addEventListener("transitionend", function () {
+                      this.remove();
+                    });
+                }
+                // append new div
+                let div = document.createElement("div");
+                div.innerHTML = `
+                <span class="t-c-b">${nowData.lyrics}</span>
+              `;
+                div.classList.add("lyrics-container");
+                div.style.top =
+                  mouseY + window.scrollY - article.offsetHeight + "px";
+                div.style.left = mouseX + "px";
+                if (!document.querySelector(".lyrics-container")) {
+                  document.querySelector("main").appendChild(div);
+                  window.setTimeout(function () {
+                    document
+                      .querySelector(".lyrics-container")
+                      .classList.add("show");
+                  }, 100);
+                }
               }
             }
           }
+          if (!clickData && document.querySelector(".lyrics-container.show")) {
+            document
+              .querySelector(".lyrics-container")
+              .classList.remove("show");
+            document
+              .querySelector(".lyrics-container:not(.show)")
+              .addEventListener("transitionend", function () {
+                this.remove();
+              });
+          }
         }
-        if (!clickData && document.querySelector(".lyrics-container.show")) {
-          document.querySelector(".lyrics-container").classList.remove("show");
-          document
-            .querySelector(".lyrics-container:not(.show)")
-            .addEventListener("transitionend", function () {
-              this.remove();
-            });
+
+        function renderSong(title, year, singer, x, y) {
+          sketch.push();
+          sketch.fill(0, 0, 95);
+          sketch.textAlign(sketch.RIGHT);
+          sketch.textSize(rem);
+          sketch.text(title, x, y - rem * 0.25);
+          sketch.textSize(rem * 1.25);
+          sketch.text(year, x, y + rem * 1.5);
+          sketch.textSize(rem * 0.75);
+          sketch.text(singer, x, y + rem * 3);
+          sketch.pop();
         }
-      }
 
-      function renderSong(title, year, singer, x, y) {
-        push();
-        fill(0, 0, 95);
-        textAlign(RIGHT);
-        textSize(rem);
-        text(title, x, y - rem * 0.25);
-        textSize(rem * 1.25);
-        text(year, x, y + rem * 1.5);
-        textSize(rem * 0.75);
-        text(singer, x, y + rem * 3);
-        pop();
-      }
-
-      function windowResized() {
-        resizeCanvas(windowWidth, 1080);
-      }
-
-      function colorPalette(atud) {
-        let c, hue, step, coldHue;
-        hue = 330;
-        coldHue = 150;
-        step = 30;
-
-        switch (atud) {
-          case "aggressive":
-            c = color(random(hue, hue + step), 70, 90);
-            break;
-          case "hope":
-            c = color(random(hue + step, hue + step * 2), 70, 90);
-            break;
-          case "stubborn":
-            c = color(random(hue + step * 2, hue + step * 3), 70, 90);
-            break;
-          case "nervous":
-            c = color(random(hue + step * 3, hue + step * 4), 70, 90);
-            break;
-          case "neutral":
-            c = color(0, 0, 60);
-            break;
-          case "depressed":
-            c = color(random(coldHue + step, coldHue + step * 2), 70, 60);
-            break;
-          case "regret":
-            c = color(random(coldHue + step * 2, coldHue + step * 3), 50, 60);
-            break;
-          case "passive":
-            c = color(random(coldHue + step * 3, coldHue + step * 4), 40, 60);
-            break;
-          case "hurtHope":
-            c = color(random(coldHue + step * 4, coldHue + step * 5), 40, 60);
-            break;
+        function windowResized() {
+          resizeCanvas(windowWidth, 1080);
         }
-        return c;
-      }
 
-      function loveColorPalette(lv) {
-        let c;
-        switch (lv) {
-          case 1: //noun love
-            c = color("#ff6d94");
-            break;
-          case 2: //love as a verb
-            c = color("#8c6af2");
-            break;
-          case 3: //love you
-            c = color("#ed3434");
-            break;
-          case 4: //love me
-            c = color("#ff5bf4");
-            break;
-          case 5: //without love
-            c = color("#6bc8ff");
-            break;
-          case 6: //like
-            c = color("#ffc249");
-            break;
-          case 7:
-            c = color("#2dffc7");
-            break;
+        function colorPalette(atud) {
+          let c, hue, step, coldHue;
+          hue = 330;
+          coldHue = 150;
+          step = 30;
+
+          switch (atud) {
+            case "aggressive":
+              c = sketch.color(sketch.random(hue, hue + step), 70, 90);
+              break;
+            case "hope":
+              c = sketch.color(
+                sketch.random(hue + step, hue + step * 2),
+                70,
+                90
+              );
+              break;
+            case "stubborn":
+              c = sketch.color(
+                sketch.random(hue + step * 2, hue + step * 3),
+                70,
+                90
+              );
+              break;
+            case "nervous":
+              c = sketch.color(
+                sketch.random(hue + step * 3, hue + step * 4),
+                70,
+                90
+              );
+              break;
+            case "neutral":
+              c = sketch.color(0, 0, 60);
+              break;
+            case "depressed":
+              c = sketch.color(
+                sketch.random(coldHue + step, coldHue + step * 2),
+                70,
+                60
+              );
+              break;
+            case "regret":
+              c = sketch.color(
+                sketch.random(coldHue + step * 2, coldHue + step * 3),
+                50,
+                60
+              );
+              break;
+            case "passive":
+              c = sketch.color(
+                sketch.random(coldHue + step * 3, coldHue + step * 4),
+                40,
+                60
+              );
+              break;
+            case "hurtHope":
+              c = sketch.color(
+                sketch.random(coldHue + step * 4, coldHue + step * 5),
+                40,
+                60
+              );
+              break;
+          }
+          return c;
         }
-        return c;
-      }
+
+        function loveColorPalette(lv) {
+          let c;
+          switch (lv) {
+            case 1: //noun love
+              c = sketch.color("#ff6d94");
+              break;
+            case 2: //love as a verb
+              c = sketch.color("#8c6af2");
+              break;
+            case 3: //love you
+              c = sketch.color("#ed3434");
+              break;
+            case 4: //love me
+              c = sketch.color("#ff5bf4");
+              break;
+            case 5: //without love
+              c = sketch.color("#6bc8ff");
+              break;
+            case 6: //like
+              c = sketch.color("#ffc249");
+              break;
+            case 7:
+              c = sketch.color("#2dffc7");
+              break;
+          }
+          return c;
+        }
+      }, 'datavzContainer');
+
+
+
+      let p5Legend = new p5((sketch) => {
+        let subject_arr = ["He/She/They", "You", "I", "You and I", "We"];
+        let love_arr = [
+          { text: "As a noun", color: "#ff6d94" },
+          { text: "As a verb", color: "#8c6af2" },
+          { text: "Love you", color: "#ed3434" },
+          { text: "Love me", color: "#ff5bf4" },
+          { text: "Without love", color: "#6bc8ff" },
+          { text: "Means Like", color: "#ffc249" },
+          { text: "xx", color: "#2dffc7" },
+        ];
+        let step = 40;
+
+        sketch.setup = () => {
+          console.log("p5legend");
+          sketch.createCanvas(800, 350);
+          sketch.colorMode(sketch.HSB);
+          sketch.background(0, 0, 0);
+          drawSubject(50, 50);
+          drawLove(250,50);
+        };
+
+        function drawSubject(x, y) {
+          sketch.fill(0, 0, 100);
+          sketch.push();
+          sketch.translate(x, y);
+          sketch.text("Subject", 0, 0);
+          sketch.translate(0, step);
+          sketch.noStroke();
+          sketch.circle(0, 0, 5);
+          sketch.translate(0, step); //you
+          sketch.circle(0, 0, 5);
+          sketch.stroke(0, 0, 100);
+          sketch.strokeWeight(0.5);
+          sketch.line(0, 0, 0, -10);
+          sketch.translate(0, step); //me
+          sketch.circle(0, 0, 5);
+          sketch.stroke(0, 0, 100);
+          sketch.strokeWeight(0.5);
+          sketch.line(0, 0, 0, 10);
+          sketch.translate(0, step); //me and you
+          sketch.circle(0, 0, 5);
+          sketch.stroke(0, 0, 100);
+          sketch.strokeWeight(0.5);
+          sketch.line(0, -10, 0, 10);
+          sketch.translate(0, step); //we
+          sketch.circle(0, 0, 5);
+          sketch.stroke(0, 0, 100);
+          sketch.strokeWeight(0.5);
+          sketch.noFill();
+          sketch.circle(0, 0, 13);
+          sketch.pop();
+
+          // write the legends description
+          sketch.push();
+          sketch.translate(x + step / 2, y + step / 10);
+          for (let i = 0; i < subject_arr.length; i++) {
+            sketch.translate(0, step);
+            sketch.text(subject_arr[i], 0, 0);
+          }
+          sketch.pop();
+        }
+
+        function drawLove(x, y) {
+          sketch.translate(x, y);
+          sketch.text("Use of love (愛)", 0, 0);
+          sketch.push();
+          sketch.translate(0, -step/10);
+          for (let i = 0; i < love_arr.length; i++) {
+            sketch.translate(0, step);
+            sketch.fill(love_arr[i].color);
+            sketch.rect(0, 0, 10, 10);
+            sketch.push();
+            sketch.translate(step/2, step/5);
+            sketch.fill(0,0,100);
+            sketch.text(love_arr[i].text, 0,0);
+            sketch.pop();
+          }
+          sketch.pop();
+        }
+      }, "legendContainer");
     </script>
   </body>
 </html>

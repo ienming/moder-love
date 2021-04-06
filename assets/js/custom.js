@@ -1,4 +1,5 @@
 (function () {
+    // buttons
     new Vue({
         el: "#buttons",
         data: {
