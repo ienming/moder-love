@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Moder Love</title>
+    <title>Modern Love</title>
     <link rel="stylesheet" href="assets/styles/mystyle.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg" sizes="16x16">
     <style>
       * {
         margin: 0;
@@ -21,12 +24,6 @@
         background-color: #000;
         color: #fff;
       }
-
-      /* #legendContainer{
-        position: fixed;
-        top: 0;
-        z-index: 99;
-      } */
     </style>
   </head>
   <body>
@@ -38,8 +35,19 @@
         <div
           class="mybtn"
           :class="el.class"
-          v-for="(el, index) of buttons"
+          v-for="(el, index) of attitudeBtns"
           v-on:click="filterAttitude(index, el.type)"
+          :key="el.type"
+        >
+          {{el.title}}
+        </div>
+      </div>
+      <div class="buttons-control" id="subjects">
+        <div
+          class="mybtn"
+          :class="el.class"
+          v-for="(el, index) of subjectBtns"
+          v-on:click="filterSubject(index, el.type)"
           :key="el.type"
         >
           {{el.title}}
@@ -47,13 +55,16 @@
       </div>
     </div>
     <article>
-      <h1>Modern Love</h1>
-      <p>Project description...</p>
+      <h1 style="font-family: 'Josefin Sans', sans-serif;">Modern Love</h1>
+      <p style="margin-top: 48px;">The visualization shows data on “attitudes of lyrics” in Chinese popular songs (華語流行歌曲) during 2005 to 2020.
+        Color in warm tone represents the sentence that has meaning more positive, aggresive rather than the “cold tone” which
+        usually shows attitudes more negative.</p>
       <div id="legendContainer"></div>
     </article>
     <main>
       <div id="datavzContainer"></div>
     </main>
+    <footer id="footer" class="t-small">{{txt}}</footer>
     <!-- Vue.js -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"
@@ -66,9 +77,15 @@
     <script>
       let data_arr = [],
         all_data_arr = [];
+
+      // Check if buttons single or multiple
+      let [atudControl, subjectControl] = [0, 0];
+
+      // Main DataViz Canvas
       let p5Main = new p5((sketch) => {
         function Data(year, lyrics, attitude, love, lovePos, person, sin_arr) {
           this.show = true;
+          this.subjectShow = true;
           this.year = year;
           this.lyrics = lyrics;
           this.attitude = attitude;
@@ -121,21 +138,23 @@
               sketch.stroke(0, 0, 100);
             }
             //Draw the type of "subject"
-            if (this.person != 0) {
-              sketch.translate((this.lyrics.length * em) / 2, h / 2);
-              sketch.stroke(0, 0, 100);
-              if (this.person == 1) {
-                sketch.line(0, 0, 0, -10);
-              } else if (this.person == 2) {
-                sketch.line(0, 0, 0, 10);
-              } else if (this.person == 3) {
-                sketch.line(0, -10, 0, 10);
-              } else if (this.person == 4) {
-                sketch.noFill();
-                sketch.circle(0, 0, 10);
+            if (this.subjectShow) {
+              if (this.person != 0) {
+                sketch.translate((this.lyrics.length * em) / 2, h / 2);
+                sketch.stroke(0, 0, 100);
+                if (this.person == 1) {
+                  sketch.line(0, 0, 0, -10);
+                } else if (this.person == 2) {
+                  sketch.line(0, 0, 0, 10);
+                } else if (this.person == 3) {
+                  sketch.line(0, -10, 0, 10);
+                } else if (this.person == 4) {
+                  sketch.noFill();
+                  sketch.circle(0, 0, 10);
+                }
+                sketch.fill(0, 0, 100);
+                sketch.circle(0, 0, 4);
               }
-              sketch.fill(0, 0, 100);
-              sketch.circle(0, 0, 4);
             }
             sketch.pop();
 
@@ -151,85 +170,117 @@
             title: "想見你想見你想見你",
             year: "2020",
             singer: "八三夭",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "怎麼了",
             year: "2019",
             singer: "周興哲",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "體面",
             year: "2018",
             singer: "于文文",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "讓我留在你身邊",
             year: "2017",
             singer: "陳奕迅",
+            theme: "prepared",
+            nowPercent: 0,
           },
           {
             title: "不為誰而作的歌",
             year: "2016",
             singer: "林俊傑",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "小幸運",
             year: "2015",
             singer: "田馥甄",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "像是天堂的懸崖",
             year: "2014",
             singer: "李佳薇",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "傷心的人別聽慢歌",
             year: "2013",
             singer: "五月天",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "我不願讓你一個人",
             year: "2012",
             singer: "五月天",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "天后",
             year: "2011",
             singer: "陳勢安",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "洋蔥",
             year: "2010",
             singer: "叮噹",
+            theme: "prepared",
+            nowPercent: 0,
           },
           {
             title: "沒有如果",
             year: "2009",
             singer: "梁靜茹",
+            theme: "prepared",
+            nowPercent: 0,
           },
           {
             title: "說好的幸福呢",
             year: "2008",
             singer: "周杰倫",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "背叛",
             year: "2007",
             singer: "曹格",
+            theme: "broken",
+            nowPercent: 0,
           },
           {
             title: "千里之外",
             year: "2006",
             singer: "周杰倫、費玉清",
+            theme: "prepared",
+            nowPercent: 0,
           },
           {
             title: "夜曲",
             year: "2005",
             singer: "周杰倫",
+            theme: "broken",
+            nowPercent: 0,
           },
         ];
 
-        let song, table;
+        let song, table, prop;
         let mouseX, mouseY, cnv, clickData;
         let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 200, 0, 75];
         let [btnX, btnY] = [10, 10];
@@ -244,10 +295,7 @@
         };
 
         sketch.setup = function () {
-          sketch.createCanvas(
-            window.innerWidth,
-            offsetY * 2 + 16 * h + (16 - 1) * gap
-          );
+          sketch.createCanvas(window.innerWidth, 16 * gap + 150);
           sketch.colorMode(sketch.HSB);
 
           for (let i = 0; i < table.getRowCount(); i++) {
@@ -308,15 +356,40 @@
               songs[i].year,
               songs[i].singer,
               offsetX - 10,
-              offsetY + y + 30
+              offsetY + y + 30,
+              songs[i].theme,
+              songs[i].nowPercent
             );
+            //Draw percentage
             for (let j = 0; j < all_data_arr[i].length; j++) {
               let nowData = all_data_arr[i][j];
               let lyricsLength = nowData.lyrics.length;
               // Draw
               nowData.display(x, y);
               x += lyricsLength * em;
+              // Count percentage
+              if (nowData.show && (atudControl == 0 || atudControl == 9)) {
+                //if everything is default
+                prop++;
+              } else if (nowData.show && atudControl != 0) {
+                //if attitudeBtns activate
+                prop++;
+              }
+              // }else if (
+              //   nowData.show &&
+              //   nowData.subjectShow &&
+              //   nowData.person != 0 &&
+              //   subjectControl != 0 &&
+              //   (atudControl != 0 || atudControl != 9)
+              // ) {
+              //   //if subjectBtns and atudBtns activate
+              //   prop++;
+              // }
             }
+            songs[i].nowPercent =
+              ((prop / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            prop = 0;
+            // Draw
             y += gap;
             x = 10;
           }
@@ -403,8 +476,8 @@
                 // append new div
                 let div = document.createElement("div");
                 div.innerHTML = `
-                <span class="t-c-b">${nowData.lyrics}</span>
-              `;
+                      <span class="t-c-b">${nowData.lyrics}</span>
+                    `;
                 div.classList.add("lyrics-container");
                 div.style.top =
                   mouseY + window.scrollY - article.offsetHeight + "px";
@@ -432,16 +505,38 @@
           }
         }
 
-        function renderSong(title, year, singer, x, y) {
+        function renderSong(title, year, singer, x, y, theme, nowPercent) {
+          let c;
+          if (theme == "broken") {
+            c = sketch.color(190, 70, 60);
+          } else {
+            c = sketch.color("#ed3434");
+          }
+          let step = 3;
           sketch.push();
-          sketch.fill(0, 0, 95);
+          sketch.stroke(c);
+          sketch.noFill();
+          for (let i = 0; i < 10; i++) {
+            sketch.arc(
+              x - 30,
+              y - (step / 2) * i,
+              15 + step * i,
+              15 + step * i,
+              -sketch.HALF_PI + (sketch.QUARTER_PI * (i + 1)) / 10,
+              sketch.HALF_PI
+            );
+          }
+          sketch.line(0, y + 7.5, x - 30, y + 7.5);
+          sketch.noStroke();
+          sketch.fill(0, 0, 100);
           sketch.textAlign(sketch.RIGHT);
-          sketch.textSize(rem);
-          sketch.text(title, x, y - rem * 0.25);
           sketch.textSize(rem * 1.25);
-          sketch.text(year, x, y + rem * 1.5);
+          sketch.text(year, x - 40, y - rem * 1.75);
+          sketch.textSize(rem);
+          sketch.text(title, x - 40, y - rem * 0.25);
           sketch.textSize(rem * 0.75);
-          sketch.text(singer, x, y + rem * 3);
+          sketch.text(singer, x - 40, y + rem * 2);
+          sketch.text(nowPercent, x - 100, y - 30);
           sketch.pop();
         }
 
@@ -542,10 +637,9 @@
           }
           return c;
         }
-      }, 'datavzContainer');
+      }, "datavzContainer");
 
-
-
+      // Legends Canvas
       let p5Legend = new p5((sketch) => {
         let subject_arr = ["He/She/They", "You", "I", "You and I", "We"];
         let love_arr = [
@@ -555,7 +649,6 @@
           { text: "Love me", color: "#ff5bf4" },
           { text: "Without love", color: "#6bc8ff" },
           { text: "Means Like", color: "#ffc249" },
-          { text: "xx", color: "#2dffc7" },
         ];
         let step = 40;
 
@@ -565,7 +658,7 @@
           sketch.colorMode(sketch.HSB);
           sketch.background(0, 0, 0);
           drawSubject(50, 50);
-          drawLove(250,50);
+          drawLove(250, 50);
         };
 
         function drawSubject(x, y) {
@@ -613,15 +706,15 @@
           sketch.translate(x, y);
           sketch.text("Use of love (愛)", 0, 0);
           sketch.push();
-          sketch.translate(0, -step/10);
+          sketch.translate(0, -step / 10);
           for (let i = 0; i < love_arr.length; i++) {
             sketch.translate(0, step);
             sketch.fill(love_arr[i].color);
             sketch.rect(0, 0, 10, 10);
             sketch.push();
-            sketch.translate(step/2, step/5);
-            sketch.fill(0,0,100);
-            sketch.text(love_arr[i].text, 0,0);
+            sketch.translate(step / 2, step / 5);
+            sketch.fill(0, 0, 100);
+            sketch.text(love_arr[i].text, 0, 0);
             sketch.pop();
           }
           sketch.pop();

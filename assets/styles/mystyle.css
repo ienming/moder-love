@@ -82,4 +82,20 @@ article {
 .t-c-b {
   color: #000000;
 }
+
+.t-small {
+  font-size: .25rem;
+}
+
+#footer {
+  margin: 0 200px;
+  padding: 10px 0 200px 0;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+}
+
+#subjects {
+  margin-top: 24px;
+}
 /*# sourceMappingURL=mystyle.css.map */
