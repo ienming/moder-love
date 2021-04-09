@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modern Love</title>
     <link rel="stylesheet" href="assets/styles/mystyle.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
-    <link rel="icon" href="assets/favicon.svg" type="image/svg" sizes="16x16">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg" sizes="16x16" />
     <style>
       * {
         margin: 0;
@@ -29,7 +32,7 @@
   <body>
     <div id="controller">
       <p class="t-txt" style="margin-bottom: 1rem; margin-left: 135px">
-        Show the lyrics with attitudes:
+        Show the lyrics with certain attitudes or containing certain subject:
       </p>
       <div class="buttons-control" id="buttons">
         <div
@@ -42,7 +45,7 @@
           {{el.title}}
         </div>
       </div>
-      <div class="buttons-control" id="subjects">
+      <!-- <div class="buttons-control" id="subjects">
         <div
           class="mybtn"
           :class="el.class"
@@ -52,13 +55,16 @@
         >
           {{el.title}}
         </div>
-      </div>
+      </div> -->
     </div>
     <article>
-      <h1 style="font-family: 'Josefin Sans', sans-serif;">Modern Love</h1>
-      <p style="margin-top: 48px;">The visualization shows data on “attitudes of lyrics” in Chinese popular songs (華語流行歌曲) during 2005 to 2020.
-        Color in warm tone represents the sentence that has meaning more positive, aggresive rather than the “cold tone” which
-        usually shows attitudes more negative.</p>
+      <h1 style="font-family: 'Josefin Sans', sans-serif">Modern Love</h1>
+      <p style="margin-top: 48px">
+        The visualization shows data on “attitudes of lyrics” in Chinese popular
+        songs (華語流行歌曲) during 2005 to 2020. Color in warm tone represents
+        the sentence that has meaning more positive, aggresive rather than the
+        “cold tone” which usually shows attitudes more negative.
+      </p>
       <div id="legendContainer"></div>
     </article>
     <main>
@@ -138,7 +144,7 @@
               sketch.stroke(0, 0, 100);
             }
             //Draw the type of "subject"
-            if (this.subjectShow) {
+            if (this.subjectShow && this.show) {
               if (this.person != 0) {
                 sketch.translate((this.lyrics.length * em) / 2, h / 2);
                 sketch.stroke(0, 0, 100);
@@ -281,8 +287,10 @@
         ];
 
         let song, table, prop;
+        let nowShowLength = 0;
+        let intersecControl = false;
         let mouseX, mouseY, cnv, clickData;
-        let [x, y, em, offsetX, offsetY, h] = [10, 20, 1.6, 200, 0, 75];
+        let [x, y, em, offsetX, offsetY, h] = [10, 30, 1.6, 200, 0, 75];
         let [btnX, btnY] = [10, 10];
         let gap = h * 1.25;
         let rem = 12;
@@ -356,7 +364,7 @@
               songs[i].year,
               songs[i].singer,
               offsetX - 10,
-              offsetY + y + 30,
+              offsetY + y + 40,
               songs[i].theme,
               songs[i].nowPercent
             );
@@ -368,32 +376,72 @@
               nowData.display(x, y);
               x += lyricsLength * em;
               // Count percentage
-              if (nowData.show && (atudControl == 0 || atudControl == 9)) {
+              if (nowData.show && (atudControl == 0 || atudControl == 9) && (subjectControl == 0 || subjectControl == 5)) {
                 //if everything is default
                 prop++;
-              } else if (nowData.show && atudControl != 0) {
-                //if attitudeBtns activate
+              } else if (
+                nowData.show &&
+                atudControl != 0 &&
+                (subjectControl == 0 || subjectControl == 5)
+              ) {
+                //if only attitudeBtns activate
+                prop++;
+              } else if (
+                nowData.show &&
+                nowData.subjectShow &&
+                nowData.person != 0 &&
+                (subjectControl != 0 || subjectControl != 5) &&
+                (atudControl != 0 || atudControl != 9)
+              ) {
+                //if subjectBtns and atudBtns activate
+                prop++;
+                intersecControl = true;
+              } else if (
+                nowData.subjectShow &&
+                nowData.person != 0 &&
+                (subjectControl != 0 || subjectControl != 5) &&
+                (atudControl == 0 || atudControl == 9)
+              ) {
+                //if only subjectBtns activate
                 prop++;
               }
-              // }else if (
-              //   nowData.show &&
-              //   nowData.subjectShow &&
-              //   nowData.person != 0 &&
-              //   subjectControl != 0 &&
-              //   (atudControl != 0 || atudControl != 9)
-              // ) {
-              //   //if subjectBtns and atudBtns activate
-              //   prop++;
-              // }
+
+              //if subjectBtns and atudBtns activate
+              if (
+                nowData.show &&
+                intersecControl &&
+                (subjectControl != 0 || subjectControl != 5) &&
+                (atudControl != 0 || atudControl != 9)
+              ) {
+                nowShowLength++;
+              }
             }
-            songs[i].nowPercent =
-              ((prop / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            if (!intersecControl) {
+              songs[i].nowPercent =
+                ((prop / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            } else if (intersecControl && nowShowLength != 0) {
+              songs[i].nowPercent =
+                ((prop / nowShowLength) * 100).toFixed(0) + "%";
+            }
             prop = 0;
+            nowShowLength = 0;
+            intersecControl = false;
             // Draw
             y += gap;
             x = 10;
           }
-          y = 20;
+          y = 70;
+          // Percentage description
+          sketch.fill("#ffffff");
+          sketch.noStroke();
+          sketch.textAlign(sketch.LEFT);
+          sketch.text(
+            `The precent of selected attitudes\nlyrics within whole song`,
+            35,
+            20
+          );
+          sketch.stroke("#ffffff");
+          sketch.line(90, 42, 90, 75);
 
           // Eventlistener
           sketch.mouseClicked = (e) => {
@@ -536,7 +584,7 @@
           sketch.text(title, x - 40, y - rem * 0.25);
           sketch.textSize(rem * 0.75);
           sketch.text(singer, x - 40, y + rem * 2);
-          sketch.text(nowPercent, x - 100, y - 30);
+          sketch.text(nowPercent, x - 85, y - 21);
           sketch.pop();
         }
 
@@ -650,6 +698,15 @@
           { text: "Without love", color: "#6bc8ff" },
           { text: "Means Like", color: "#ffc249" },
         ];
+        let attitude_arr = [
+          sketch.color("#e640a6"),
+          sketch.color("#ed3434"),
+          sketch.color("#e54545"),
+          sketch.color("#999"),
+          sketch.color("#2e8799"),
+          sketch.color("#5c6b99"),
+          sketch.color("#6b5c99")
+        ]
         let step = 40;
 
         sketch.setup = () => {
@@ -658,7 +715,9 @@
           sketch.colorMode(sketch.HSB);
           sketch.background(0, 0, 0);
           drawSubject(50, 50);
-          drawLove(250, 50);
+          drawLove(200, 50);
+          drawTheme(280, 50);
+          drawAttitude(380, 0);
         };
 
         function drawSubject(x, y) {
@@ -717,6 +776,71 @@
             sketch.text(love_arr[i].text, 0, 0);
             sketch.pop();
           }
+          sketch.pop();
+        }
+
+        function drawTheme(x, y){
+          sketch.push();
+          let c = sketch.color(190, 70, 60);
+          let fanStep = 3;
+          sketch.stroke(c);
+          sketch.noFill();
+          for (let i = 0; i < 10; i++) {
+            sketch.arc(
+              x - 30,
+              y - (fanStep / 2) * i,
+              15 + fanStep * i,
+              15 + fanStep * i,
+              -sketch.HALF_PI + (sketch.QUARTER_PI * (i + 1)) / 10,
+              sketch.HALF_PI
+            );
+          }
+          sketch.line(x-30,y+8,x-130,y+8);
+          c = sketch.color("#ed3434");
+          sketch.stroke(c);
+          sketch.noFill();
+          for (let i = 0; i < 10; i++) {
+            sketch.arc(
+              x - 30,
+              y+120 - (fanStep / 2) * i,
+              15 + fanStep * i,
+              15 + fanStep * i,
+              -sketch.HALF_PI + (sketch.QUARTER_PI * (i + 1)) / 10,
+              sketch.HALF_PI
+            );
+          }
+          sketch.line(x-30,y+128,x-130,y+128);
+          sketch.fill("#ffffff");
+          sketch.translate(x-133, y-50);
+          sketch.noStroke();
+          sketch.text("Theme of song", 0, 0);
+          sketch.text("Sad or heart-broken story", 0, 80);
+          sketch.text("Shows aggressive or desire of love", 0, 200);
+          sketch.pop();
+        }
+
+        function drawAttitude(x, y){
+          let [cx, cy] = [10, 45];
+          sketch.push();
+          sketch.translate(x,y);
+          sketch.fill("#ffffff");
+          sketch.text("Lyrics attitudes", 0,0);
+          for(let i=0;i<7;i++){
+            sketch.fill(attitude_arr[i]);
+            sketch.circle(cx, cy, 25);
+            cx += 40;
+            if(i==2){
+              cy = 120;
+              cx = 10;
+            }else if (i==3){
+              cy = 195;
+              cx = 10;
+            }
+          }
+          sketch.fill("#ffffff");
+          sketch.text("Group of positive attitudes", 0, 78);
+          sketch.text("Neutral", 0, 152);
+          sketch.text("Group of negative attitudes", 0, 227);
           sketch.pop();
         }
       }, "legendContainer");

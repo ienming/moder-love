@@ -73,8 +73,10 @@
                         let nowData = all_data_arr[i][j];
                         if (nowData.attitude == key && nowData.show) {
                             nowData.show = false;
+                            // nowData.subjectShow = false;
                         } else if (nowData.attitude == key && !nowData.show) {
                             nowData.show = true;
+                            // nowData.subjectShow = true;
                         }
                     }
                 }
