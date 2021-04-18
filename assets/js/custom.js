@@ -3,6 +3,7 @@
     let vm = new Vue({
         el: "#controller",
         data: {
+            cls: "",
             attitudeBtns: [
                 {
                     title: "Aggressive",
@@ -124,6 +125,13 @@
                     }
                 });
                 console.log(subjectControl)
+            },
+            toggleController: function(){
+                if(this.cls == ""){
+                    this.cls = "hide"
+                }else{
+                    this.cls = ""
+                }
             }
         }
     });

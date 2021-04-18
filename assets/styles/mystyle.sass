@@ -26,11 +26,26 @@ article
     bottom: 0
     left: 0
     background-color: #222
-    // background: linear-gradient(51deg, rgba(255,0,0,1) 0%, rgba(243,255,0,1) 31%, rgba(18,228,255,1) 58%, rgba(0,97,255,1) 80%, rgba(220,0,255,1) 100%)
     height: unset
     width: 100%
     padding: 30px 0
     z-index: 99
+    transition: .35s $EaseOutQuint
+    &.hide
+        transform: translateY(95%)
+    >#toggle
+        font-size: .8rem
+        position: absolute
+        top: -2rem
+        right: 30px
+        background-color: #222
+        padding: .5rem 1rem
+        border-radius: 5px 5px 0 0
+        color: #bbb
+        transition: .6s $EaseOutQuint
+        &:hover
+            cursor: pointer
+            color: $white
 
 .buttons-control
     display: flex

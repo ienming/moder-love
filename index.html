@@ -30,10 +30,11 @@
     </style>
   </head>
   <body>
-    <div id="controller">
-      <p class="t-txt" style="margin-bottom: 1rem; margin-left: 135px">
-        Show the lyrics with certain attitudes or containing certain subject:
+    <div id="controller" :class="cls">
+      <p class="t-txt" style="margin-bottom: 1rem; margin-left: 85px">
+        Show the lyrics with certain emotion or containing certain subject
       </p>
+      <div id="toggle" v-on:click="toggleController">Show/Close tab</div>
       <div class="buttons-control" id="buttons">
         <div
           class="mybtn"
@@ -45,7 +46,7 @@
           {{el.title}}
         </div>
       </div>
-      <!-- <div class="buttons-control" id="subjects">
+      <div class="buttons-control" id="subjects">
         <div
           class="mybtn"
           :class="el.class"
@@ -55,7 +56,7 @@
         >
           {{el.title}}
         </div>
-      </div> -->
+      </div>
     </div>
     <article>
       <h1 style="font-family: 'Josefin Sans', sans-serif">Modern Love</h1>
@@ -89,7 +90,16 @@
 
       // Main DataViz Canvas
       let p5Main = new p5((sketch) => {
-        function Data(year, lyrics, attitude, love, lovePos, person, sin_arr) {
+        function Data(
+          year,
+          lyrics,
+          attitude,
+          love,
+          lovePos,
+          person,
+          sin_arr,
+          bz_arr
+        ) {
           this.show = true;
           this.subjectShow = true;
           this.year = year;
@@ -102,6 +112,9 @@
           this.dataX = undefined;
           this.dataY = undefined;
           this.sin = sin_arr;
+          this.bz = bz_arr;
+          this.bz_v = sketch.random(1, 2) * 0.5;
+          this.bz_vx = sketch.random(2) * 0.35;
           this.angle = 0;
           this.offset = 0;
           this.bg = colorPalette(this.attitude);
@@ -122,18 +135,46 @@
               sketch.noFill();
               sketch.stroke(10);
             }
-            for (let j = 0; j < this.sin.length; j++) {
-              sketch.beginShape();
-              for (let i = 0; i < this.lyrics.length; i++) {
-                this.angle = sketch.TWO_PI / i + this.offset;
-                sketch.vertex(
-                  i * em,
-                  sketch.sin(this.angle) * this.sin[j].h + h / 2
-                );
+            // Draw main graphic
+            if (waveMode) {
+              for (let j = 0; j < this.sin.length; j++) {
+                sketch.beginShape();
+                for (let i = 0; i < this.lyrics.length; i++) {
+                  this.angle = sketch.TWO_PI / i + this.offset;
+                  sketch.vertex(
+                    i * em,
+                    sketch.sin(this.angle) * this.sin[j].h + h / 2
+                  );
+                }
+                sketch.endShape();
               }
-              sketch.endShape();
+              this.offset += 0.03;
+            } else if (wholeMode) {
+              for (let i = 0; i < this.bz.length; i++) {
+                sketch.bezier(
+                  0,
+                  h / 2,
+                  this.bz[i].bzcx1,
+                  this.bz[i].bzcy1,
+                  this.bz[i].bzcx2,
+                  this.bz[i].bzcy2,
+                  this.lyrics.length * em,
+                  h / 2
+                );
+
+                if (this.bz[i].bzcx1 < 300) {
+                  this.bz[i].bzcy1 += this.bz_v;
+                  this.bz[i].bzcx1 += this.bz_vx;
+                }
+                if (this.bz[i].bzcy1 >= 100 || this.bz[i].bzcy1 <= -100) {
+                  this.bz_v *= -1;
+                }
+
+                if (this.bz[i].bzcx1 <= 0) {
+                  this.bz_vx *= -1;
+                }
+              }
             }
-            this.offset += 0.03;
             // Draw the position of "love"
             if (this.love != 0) {
               sketch.translate(0, 0);
@@ -144,7 +185,7 @@
               sketch.stroke(0, 0, 100);
             }
             //Draw the type of "subject"
-            if (this.subjectShow && this.show) {
+            if (this.subjectShow) {
               if (this.person != 0) {
                 sketch.translate((this.lyrics.length * em) / 2, h / 2);
                 sketch.stroke(0, 0, 100);
@@ -177,122 +218,156 @@
             year: "2020",
             singer: "八三夭",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "怎麼了",
             year: "2019",
             singer: "周興哲",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "體面",
             year: "2018",
             singer: "于文文",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "讓我留在你身邊",
             year: "2017",
             singer: "陳奕迅",
             theme: "prepared",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "不為誰而作的歌",
             year: "2016",
             singer: "林俊傑",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "小幸運",
             year: "2015",
             singer: "田馥甄",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "像是天堂的懸崖",
             year: "2014",
             singer: "李佳薇",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "傷心的人別聽慢歌",
             year: "2013",
             singer: "五月天",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "我不願讓你一個人",
             year: "2012",
             singer: "五月天",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "天后",
             year: "2011",
             singer: "陳勢安",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "洋蔥",
             year: "2010",
             singer: "叮噹",
             theme: "prepared",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "沒有如果",
             year: "2009",
             singer: "梁靜茹",
             theme: "prepared",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "說好的幸福呢",
             year: "2008",
             singer: "周杰倫",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "背叛",
             year: "2007",
             singer: "曹格",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "千里之外",
             year: "2006",
             singer: "周杰倫、費玉清",
             theme: "prepared",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
           {
             title: "夜曲",
             year: "2005",
             singer: "周杰倫",
             theme: "broken",
-            nowPercent: 0,
+            atudPercent: 0,
+            subjectPercent: 0,
+            interPercent: 0,
           },
         ];
 
-        let song, table, prop;
+        let song, table;
+        let atudProp, subjectProp, interProp;
+        let [waveMode, wholeMode] = [false, true];
         let nowShowLength = 0;
         let intersecControl = false;
         let mouseX, mouseY, cnv, clickData;
-        let [x, y, em, offsetX, offsetY, h] = [10, 30, 1.6, 200, 0, 75];
+        let [x, y, em, offsetX, offsetY, h] = [10, 30, 1.6, 200, 70, 75];
         let [btnX, btnY] = [10, 10];
-        let gap = h * 1.25;
+        let gap = h * 2;
         let rem = 12;
         let beginYear = "2020";
         let article = document.querySelector("article");
@@ -317,6 +392,26 @@
             let person = row.getNum("Person");
             let sinObj = undefined;
             let sin_arr = [];
+            let bzObj = undefined;
+            let bz_arr = [];
+
+            //prepare data bezier
+            for (let i = 0; i < 10; i++) {
+              let [bzcx1, bzcy1, bzcx2, bzcy2] = [
+                sketch.random(lyrics.length * em),
+                sketch.random(h + 20),
+                sketch.random(lyrics.length * em),
+                sketch.random(h + 20),
+              ];
+              bzObj = {
+                bzcx1: bzcx1,
+                bzcy1: bzcy1,
+                bzcx2: bzcx2,
+                bzcy2: bzcy2,
+              };
+
+              bz_arr.push(bzObj);
+            }
 
             //prepare sin data
             for (let i = 0; i < 10; i++) {
@@ -335,7 +430,8 @@
               love,
               lovePos,
               person,
-              sin_arr
+              sin_arr,
+              bz_arr
             );
 
             // Switch to next year into another array
@@ -366,7 +462,9 @@
               offsetX - 10,
               offsetY + y + 40,
               songs[i].theme,
-              songs[i].nowPercent
+              songs[i].atudPercent,
+              songs[i].subjectPercent,
+              songs[i].interPercent
             );
             //Draw percentage
             for (let j = 0; j < all_data_arr[i].length; j++) {
@@ -376,54 +474,38 @@
               nowData.display(x, y);
               x += lyricsLength * em;
               // Count percentage
-              if (nowData.show && (atudControl == 0 || atudControl == 9) && (subjectControl == 0 || subjectControl == 5)) {
-                //if everything is default
-                prop++;
-              } else if (
-                nowData.show &&
-                atudControl != 0 &&
-                (subjectControl == 0 || subjectControl == 5)
-              ) {
-                //if only attitudeBtns activate
-                prop++;
-              } else if (
-                nowData.show &&
-                nowData.subjectShow &&
-                nowData.person != 0 &&
-                (subjectControl != 0 || subjectControl != 5) &&
-                (atudControl != 0 || atudControl != 9)
-              ) {
-                //if subjectBtns and atudBtns activate
-                prop++;
-                intersecControl = true;
-              } else if (
-                nowData.subjectShow &&
-                nowData.person != 0 &&
-                (subjectControl != 0 || subjectControl != 5) &&
-                (atudControl == 0 || atudControl == 9)
-              ) {
-                //if only subjectBtns activate
-                prop++;
+              if (nowData.show) {
+                atudProp++;
               }
-
-              //if subjectBtns and atudBtns activate
-              if (
-                nowData.show &&
-                intersecControl &&
-                (subjectControl != 0 || subjectControl != 5) &&
-                (atudControl != 0 || atudControl != 9)
-              ) {
-                nowShowLength++;
+              if (nowData.subjectShow && nowData.person != 0) {
+                subjectProp++;
+              }
+              if (nowData.person != 0 && nowData.subjectShow && nowData.show) {
+                interProp++;
               }
             }
-            if (!intersecControl) {
-              songs[i].nowPercent =
-                ((prop / all_data_arr[i].length) * 100).toFixed(0) + "%";
-            } else if (intersecControl && nowShowLength != 0) {
-              songs[i].nowPercent =
-                ((prop / nowShowLength) * 100).toFixed(0) + "%";
+            if (atudProp != 0) {
+              songs[i].atudPercent =
+                ((atudProp / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            } else {
+              songs[i].atudPercent = "0%";
             }
-            prop = 0;
+            if (subjectProp != 0) {
+              songs[i].subjectPercent =
+                ((subjectProp / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            } else {
+              songs[i].subjectPercent = "0%";
+            }
+            if (interProp != 0) {
+              songs[i].interPercent =
+                ((interProp / all_data_arr[i].length) * 100).toFixed(0) + "%";
+            } else {
+              songs[i].interPercent = "0%";
+            }
+            // initializing
+            atudProp = 0;
+            subjectProp = 0;
+            interProp = 0;
             nowShowLength = 0;
             intersecControl = false;
             // Draw
@@ -436,12 +518,12 @@
           sketch.noStroke();
           sketch.textAlign(sketch.LEFT);
           sketch.text(
-            `The precent of selected attitudes\nlyrics within whole song`,
-            35,
-            20
+            `Percentage of selected emotion / subject among whole song\nLast one is about cross comparison of emotion and subject usage among whole song`,
+            155,
+            15
           );
-          sketch.stroke("#ffffff");
-          sketch.line(90, 42, 90, 75);
+          sketch.stroke("#999");
+          sketch.line(220, 42, 220, 85);
 
           // Eventlistener
           sketch.mouseClicked = (e) => {
@@ -553,7 +635,17 @@
           }
         }
 
-        function renderSong(title, year, singer, x, y, theme, nowPercent) {
+        function renderSong(
+          title,
+          year,
+          singer,
+          x,
+          y,
+          theme,
+          atudPercent,
+          subjectPercent,
+          interPercent
+        ) {
           let c;
           if (theme == "broken") {
             c = sketch.color(190, 70, 60);
@@ -584,7 +676,14 @@
           sketch.text(title, x - 40, y - rem * 0.25);
           sketch.textSize(rem * 0.75);
           sketch.text(singer, x - 40, y + rem * 2);
-          sketch.text(nowPercent, x - 85, y - 21);
+          sketch.textSize(rem);
+          sketch.text(
+            `
+            ${atudPercent} / ${subjectPercent} / ${interPercent}
+            `,
+            x + 130,
+            y - 90
+          );
           sketch.pop();
         }
 
@@ -705,8 +804,8 @@
           sketch.color("#999"),
           sketch.color("#2e8799"),
           sketch.color("#5c6b99"),
-          sketch.color("#6b5c99")
-        ]
+          sketch.color("#6b5c99"),
+        ];
         let step = 40;
 
         sketch.setup = () => {
@@ -779,7 +878,7 @@
           sketch.pop();
         }
 
-        function drawTheme(x, y){
+        function drawTheme(x, y) {
           sketch.push();
           let c = sketch.color(190, 70, 60);
           let fanStep = 3;
@@ -795,23 +894,23 @@
               sketch.HALF_PI
             );
           }
-          sketch.line(x-30,y+8,x-130,y+8);
+          sketch.line(x - 30, y + 8, x - 130, y + 8);
           c = sketch.color("#ed3434");
           sketch.stroke(c);
           sketch.noFill();
           for (let i = 0; i < 10; i++) {
             sketch.arc(
               x - 30,
-              y+120 - (fanStep / 2) * i,
+              y + 120 - (fanStep / 2) * i,
               15 + fanStep * i,
               15 + fanStep * i,
               -sketch.HALF_PI + (sketch.QUARTER_PI * (i + 1)) / 10,
               sketch.HALF_PI
             );
           }
-          sketch.line(x-30,y+128,x-130,y+128);
+          sketch.line(x - 30, y + 128, x - 130, y + 128);
           sketch.fill("#ffffff");
-          sketch.translate(x-133, y-50);
+          sketch.translate(x - 133, y - 50);
           sketch.noStroke();
           sketch.text("Theme of song", 0, 0);
           sketch.text("Sad or heart-broken story", 0, 80);
@@ -819,20 +918,20 @@
           sketch.pop();
         }
 
-        function drawAttitude(x, y){
+        function drawAttitude(x, y) {
           let [cx, cy] = [10, 45];
           sketch.push();
-          sketch.translate(x,y);
+          sketch.translate(x, y);
           sketch.fill("#ffffff");
-          sketch.text("Lyrics attitudes", 0,0);
-          for(let i=0;i<7;i++){
+          sketch.text("Lyrics attitudes", 0, 0);
+          for (let i = 0; i < 7; i++) {
             sketch.fill(attitude_arr[i]);
             sketch.circle(cx, cy, 25);
             cx += 40;
-            if(i==2){
+            if (i == 2) {
               cy = 120;
               cx = 10;
-            }else if (i==3){
+            } else if (i == 3) {
               cy = 195;
               cx = 10;
             }

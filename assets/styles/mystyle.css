@@ -35,6 +35,31 @@ article {
   width: 100%;
   padding: 30px 0;
   z-index: 99;
+  -webkit-transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#controller.hide {
+  -webkit-transform: translateY(95%);
+          transform: translateY(95%);
+}
+
+#controller > #toggle {
+  font-size: .8rem;
+  position: absolute;
+  top: -2rem;
+  right: 30px;
+  background-color: #222;
+  padding: .5rem 1rem;
+  border-radius: 5px 5px 0 0;
+  color: #bbb;
+  -webkit-transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#controller > #toggle:hover {
+  cursor: pointer;
+  color: #ffffff;
 }
 
 .buttons-control {
