@@ -2,6 +2,18 @@ $white: #ffffff
 $black: #000000
 $EaseOutQuint : cubic-bezier(0.22, 1, 0.36, 1)
 
+.t-txt
+    font-size: .8rem
+    color: $white
+    padding: 0
+    margin: 0
+
+.t-c-b
+    color: $black
+
+.t-small
+    font-size: .25rem
+
 main
     position: relative
 
@@ -50,12 +62,16 @@ article
 .buttons-control
     display: flex
     align-items: center
-    justify-content: center
+    justify-content: baseline
     color: $white
+    margin: 0 0 1rem 86px
+    &:nth-child(5)
+        margin: unset
+        margin-left: 86px
 
 .mybtn
     font-size: .8rem
-    margin: 0 1rem
+    margin: 0 .5rem 0 .75rem
     padding: .25rem 1rem
     background-color: transparent
     border: 1px solid $white
@@ -71,24 +87,9 @@ article
 .mybtn.show
     opacity: 1
 
-.t-txt
-    font-size: .8rem
-    color: $white
-    padding: 0
-    margin: 0
-
-.t-c-b
-    color: $black
-
-.t-small
-    font-size: .25rem
-
 #footer
     margin: 0 200px
     padding: 10px 0 200px 0
     border-top: .5px solid transparentize($white, .75)
     color: transparentize($white, .5)
     text-align: right
-
-#subjects
-    margin-top: 24px

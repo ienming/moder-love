@@ -4,6 +4,17 @@
         el: "#controller",
         data: {
             cls: "",
+            modes: [
+                {
+                    content: "By sentences",
+                    key: "wave",
+                    class: "show"
+                }, {
+                    content: "By Songs",
+                    key: "songs",
+                    class: ""
+                }
+            ],
             attitudeBtns: [
                 {
                     title: "Aggressive",
@@ -96,7 +107,7 @@
                         atudControl += 0;
                     }
                 });
-                console.log(atudControl);
+                // console.log(atudControl);
             },
             filterSubject: function (idx, key) {
                 for (let i = 0; i < all_data_arr.length; i++) {
@@ -124,13 +135,26 @@
                         subjectControl += 0;
                     }
                 });
-                console.log(subjectControl)
+                // console.log(subjectControl)
             },
-            toggleController: function(){
-                if(this.cls == ""){
+            toggleController: function () {
+                if (this.cls == "") {
                     this.cls = "hide"
-                }else{
+                } else {
                     this.cls = ""
+                }
+            },
+            switchMode: function (el) {
+                if (el != drawMode){
+                    drawMode = el;
+                }
+
+                if(drawMode == this.modes[0].key){
+                    this.modes[0].class = "show"
+                    this.modes[1].class = ""
+                }else{
+                    this.modes[0].class = ""
+                    this.modes[1].class = "show"
                 }
             }
         }

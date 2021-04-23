@@ -35,8 +35,9 @@
         Show the lyrics with certain emotion or containing certain subject
       </p>
       <div id="toggle" v-on:click="toggleController">Show/Close tab</div>
-      <div class="buttons-control" id="buttons">
-        <div
+      <div class="t-txt buttons-control" id="buttons">
+        Emotion
+        <span
           class="mybtn"
           :class="el.class"
           v-for="(el, index) of attitudeBtns"
@@ -44,10 +45,11 @@
           :key="el.type"
         >
           {{el.title}}
-        </div>
+        </span>
       </div>
-      <div class="buttons-control" id="subjects">
-        <div
+      <div class="t-txt buttons-control" id="subjects">
+        Subject
+        <span
           class="mybtn"
           :class="el.class"
           v-for="(el, index) of subjectBtns"
@@ -55,7 +57,17 @@
           :key="el.type"
         >
           {{el.title}}
-        </div>
+        </span>
+      </div>
+      <div id="modes" class="buttons-control t-txt">
+        Modes
+        <span
+          class="mybtn"
+          :class="mode.class"
+          v-for="mode of modes"
+          v-on:click="switchMode(mode.key)"
+          >{{mode.content}}</span
+        >
       </div>
     </div>
     <article>
@@ -82,8 +94,10 @@
     <!-- P5.js -->
     <script src="assets/js/p5.min.js"></script>
     <script>
+      // Global Variables
       let data_arr = [],
         all_data_arr = [];
+      let drawMode = "wave";
 
       // Check if buttons single or multiple
       let [atudControl, subjectControl] = [0, 0];
@@ -136,7 +150,7 @@
               sketch.stroke(10);
             }
             // Draw main graphic
-            if (waveMode) {
+            if (drawMode == "wave") {
               for (let j = 0; j < this.sin.length; j++) {
                 sketch.beginShape();
                 for (let i = 0; i < this.lyrics.length; i++) {
@@ -149,7 +163,7 @@
                 sketch.endShape();
               }
               this.offset += 0.03;
-            } else if (wholeMode) {
+            } else if (drawMode == "songs") {
               for (let i = 0; i < this.bz.length; i++) {
                 sketch.bezier(
                   0,
@@ -161,44 +175,34 @@
                   this.lyrics.length * em,
                   h / 2
                 );
-
-                if (this.bz[i].bzcx1 < 300) {
-                  this.bz[i].bzcy1 += this.bz_v;
-                  this.bz[i].bzcx1 += this.bz_vx;
-                }
-                if (this.bz[i].bzcy1 >= 100 || this.bz[i].bzcy1 <= -100) {
-                  this.bz_v *= -1;
-                }
-
-                if (this.bz[i].bzcx1 <= 0) {
-                  this.bz_vx *= -1;
-                }
               }
             }
             // Draw the position of "love"
             if (this.love != 0) {
-              sketch.translate(0, 0);
-              sketch.fill(this.loveColor);
-              sketch.strokeWeight(0.5);
-              sketch.noStroke();
-              sketch.rect(this.lovePos - 3, -3, 6, 6);
-              sketch.stroke(0, 0, 100);
+                sketch.push();
+                sketch.translate(0, 0);
+                sketch.fill(this.loveColor);
+                sketch.strokeWeight(0.5);
+                sketch.noStroke();
+                sketch.rect(this.lovePos - 3, -3, 6, 6);
+                sketch.stroke(0, 0, 100);
+                sketch.pop();
             }
             //Draw the type of "subject"
             if (this.subjectShow) {
               if (this.person != 0) {
-                sketch.translate((this.lyrics.length * em) / 2, h / 2);
-                sketch.stroke(0, 0, 100);
-                if (this.person == 1) {
+                  sketch.translate((this.lyrics.length * em) / 2, h / 2);
+                  sketch.stroke(0, 0, 100);
+                  if (this.person == 1) {
                   sketch.line(0, 0, 0, -10);
-                } else if (this.person == 2) {
-                  sketch.line(0, 0, 0, 10);
-                } else if (this.person == 3) {
-                  sketch.line(0, -10, 0, 10);
-                } else if (this.person == 4) {
-                  sketch.noFill();
-                  sketch.circle(0, 0, 10);
-                }
+                  } else if (this.person == 2) {
+                    sketch.line(0, 0, 0, 10);
+                  } else if (this.person == 3) {
+                    sketch.line(0, -10, 0, 10);
+                  } else if (this.person == 4) {
+                    sketch.noFill();
+                    sketch.circle(0, 0, 10);
+                  }
                 sketch.fill(0, 0, 100);
                 sketch.circle(0, 0, 4);
               }
@@ -361,13 +365,12 @@
 
         let song, table;
         let atudProp, subjectProp, interProp;
-        let [waveMode, wholeMode] = [false, true];
         let nowShowLength = 0;
         let intersecControl = false;
         let mouseX, mouseY, cnv, clickData;
         let [x, y, em, offsetX, offsetY, h] = [10, 30, 1.6, 200, 70, 75];
         let [btnX, btnY] = [10, 10];
-        let gap = h * 2;
+        let gap = h*2;
         let rem = 12;
         let beginYear = "2020";
         let article = document.querySelector("article");
@@ -398,8 +401,8 @@
             //prepare data bezier
             for (let i = 0; i < 10; i++) {
               let [bzcx1, bzcy1, bzcx2, bzcy2] = [
-                sketch.random(lyrics.length * em),
-                sketch.random(h + 20),
+                sketch.random(lyrics.length * em*30),
+                sketch.random(h + 20*sketch.random(-5, 5)),
                 sketch.random(lyrics.length * em),
                 sketch.random(h + 20),
               ];
@@ -518,12 +521,12 @@
           sketch.noStroke();
           sketch.textAlign(sketch.LEFT);
           sketch.text(
-            `Percentage of selected emotion / subject among whole song\nLast one is about cross comparison of emotion and subject usage among whole song`,
+            `Percentage of selected emotion among whole song/\nPercentage of selected subject among whole song/\nCross comparison of emotion and subject usage among whole song`,
             155,
-            15
+            10
           );
           sketch.stroke("#999");
-          sketch.line(220, 42, 220, 85);
+          sketch.line(220, 52, 220, 85);
 
           // Eventlistener
           sketch.mouseClicked = (e) => {
@@ -794,7 +797,7 @@
           { text: "As a verb", color: "#8c6af2" },
           { text: "Love you", color: "#ed3434" },
           { text: "Love me", color: "#ff5bf4" },
-          { text: "Without love", color: "#6bc8ff" },
+          { text: "Losing love", color: "#6bc8ff" },
           { text: "Means Like", color: "#ffc249" },
         ];
         let attitude_arr = [
