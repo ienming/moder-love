@@ -9,6 +9,10 @@
   color: #000000;
 }
 
+.t-w-b {
+  font-weight: bold;
+}
+
 .t-small {
   font-size: .25rem;
 }

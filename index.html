@@ -31,7 +31,7 @@
   </head>
   <body>
     <div id="controller" :class="cls">
-      <p class="t-txt" style="margin-bottom: 1rem; margin-left: 85px">
+      <p class="t-txt t-w-b" style="margin-bottom: 1rem; margin-left: 85px">
         Show the lyrics with certain emotion or containing certain subject
       </p>
       <div id="toggle" v-on:click="toggleController">Show/Close tab</div>
@@ -60,7 +60,7 @@
         </span>
       </div>
       <div id="modes" class="buttons-control t-txt">
-        Modes
+        <span class="t-w-b">Switch to different modes</span>
         <span
           class="mybtn"
           :class="mode.class"
@@ -521,7 +521,7 @@
           sketch.noStroke();
           sketch.textAlign(sketch.LEFT);
           sketch.text(
-            `Percentage of selected emotion among whole song/\nPercentage of selected subject among whole song/\nCross comparison of emotion and subject usage among whole song`,
+            `Percentage of selected emotion among whole song/\nPercentage of selected subject among whole song/\nPercentage of emotion within selected subject usage among whole song`,
             155,
             10
           );
